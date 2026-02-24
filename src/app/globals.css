@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #F8FAFC;
+  --color-bg-dark: #E2E8F0;
+  --color-primary: #6DD5C4;
+  --color-primary-dark: #4DC0AD;
+  --color-accent: #7EB8F0;
+  --color-accent-dark: #5A9FE0;
+  --color-success: #8CD790;
+  --color-error: #F0918C;
+  --color-warning: #F5C87A;
+  --color-card: rgba(255, 255, 255, 0.65);
+  --color-card-solid: #FFFFFF;
+  --color-text: #1E293B;
+  --color-text-secondary: #64748B;
+  --color-html: #F06D5B;
+  --color-css: #7EB8F0;
+  --color-js: #F5C87A;
+  --color-php: #9B8FE6;
+  --radius-card: 24px;
+  --radius-button: 16px;
+  --radius-pill: 9999px;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .glass {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .glass-strong {
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  .soft-shadow {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04), 0 1px 6px rgba(0, 0, 0, 0.02);
+  }
+
+  .soft-shadow-lg {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.06), 0 2px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Animated gradient orbs */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, #6DD5C4, #7EB8F0);
+  top: -10%;
+  left: -5%;
+  animation: orb-float-1 25s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #F5C87A, #F0918C);
+  bottom: -10%;
+  right: -5%;
+  animation: orb-float-2 30s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 350px;
+  height: 350px;
+  background: linear-gradient(135deg, #9B8FE6, #7EB8F0);
+  top: 50%;
+  left: 50%;
+  animation: orb-float-3 35s ease-in-out infinite;
+}
+
+@keyframes orb-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(80px, 40px) scale(1.1); }
+  66% { transform: translate(-40px, 80px) scale(0.95); }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-60px, -40px) scale(1.05); }
+  66% { transform: translate(40px, -60px) scale(0.9); }
+}
+
+@keyframes orb-float-3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  33% { transform: translate(calc(-50% + 60px), calc(-50% + 60px)) scale(1.08); }
+  66% { transform: translate(calc(-50% - 60px), calc(-50% - 40px)) scale(0.92); }
+}
+
+/* Progress ring animation */
+@keyframes progress-ring {
+  from { stroke-dashoffset: var(--ring-circumference); }
+  to { stroke-dashoffset: var(--ring-offset); }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.35);
+}
