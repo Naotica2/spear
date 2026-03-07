@@ -1,11 +1,12 @@
 -- =============================================
--- CodeCraft Supabase Database Schema
+-- Spear — Supabase Database Schema
 -- Run this in Supabase SQL Editor
 -- =============================================
 
 -- Users table
 CREATE TABLE IF NOT EXISTS users (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  auth_id UUID UNIQUE,  -- links to Supabase Auth user (auth.users.id)
   username TEXT NOT NULL DEFAULT 'Learner',
   avatar TEXT NOT NULL DEFAULT 'coder',
   streak INTEGER NOT NULL DEFAULT 0,
@@ -56,7 +57,74 @@ CREATE TRIGGER users_updated_at
   FOR EACH ROW
   EXECUTE FUNCTION update_updated_at();
 
--- Row Level Security (enable when using auth)
--- ALTER TABLE users ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE progress ENABLE ROW LEVEL SECURITY;
--- ALTER TABLE badges ENABLE ROW LEVEL SECURITY;
+-- =============================================
+-- ROW LEVEL SECURITY (RLS) — WAJIB!
+-- =============================================
+
+-- Enable RLS on all tables
+ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE progress ENABLE ROW LEVEL SECURITY;
+ALTER TABLE badges ENABLE ROW LEVEL SECURITY;
+
+-- USERS: user hanya bisa lihat & edit data sendiri
+DROP POLICY IF EXISTS "Users can view own profile" ON users;
+CREATE POLICY "Users can view own profile"
+  ON users FOR SELECT
+  USING (auth_id = auth.uid());
+
+DROP POLICY IF EXISTS "Users can update own profile" ON users;
+CREATE POLICY "Users can update own profile"
+  ON users FOR UPDATE
+  USING (auth_id = auth.uid());
+
+DROP POLICY IF EXISTS "Users can insert own profile" ON users;
+CREATE POLICY "Users can insert own profile"
+  ON users FOR INSERT
+  WITH CHECK (auth_id = auth.uid());
+
+-- PROGRESS: user hanya bisa lihat & edit progress sendiri
+DROP POLICY IF EXISTS "Users can view own progress" ON progress;
+CREATE POLICY "Users can view own progress"
+  ON progress FOR SELECT
+  USING (user_id IN (SELECT id FROM users WHERE auth_id = auth.uid()));
+
+DROP POLICY IF EXISTS "Users can insert own progress" ON progress;
+CREATE POLICY "Users can insert own progress"
+  ON progress FOR INSERT
+  WITH CHECK (user_id IN (SELECT id FROM users WHERE auth_id = auth.uid()));
+
+DROP POLICY IF EXISTS "Users can update own progress" ON progress;
+CREATE POLICY "Users can update own progress"
+  ON progress FOR UPDATE
+  USING (user_id IN (SELECT id FROM users WHERE auth_id = auth.uid()));
+
+-- BADGES: user hanya bisa lihat & earn badges sendiri
+DROP POLICY IF EXISTS "Users can view own badges" ON badges;
+CREATE POLICY "Users can view own badges"
+  ON badges FOR SELECT
+  USING (user_id IN (SELECT id FROM users WHERE auth_id = auth.uid()));
+
+DROP POLICY IF EXISTS "Users can insert own badges" ON badges;
+CREATE POLICY "Users can insert own badges"
+  ON badges FOR INSERT
+  WITH CHECK (user_id IN (SELECT id FROM users WHERE auth_id = auth.uid()));
+
+-- =============================================
+-- AUTO-CREATE user profile on registration
+-- =============================================
+CREATE OR REPLACE FUNCTION handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.users (auth_id, username)
+  VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)));
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger: when someone registers via Supabase Auth, auto-create their profile
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW
+  EXECUTE FUNCTION handle_new_user();
+

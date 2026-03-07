@@ -32,12 +32,15 @@ export interface AppState {
   streakDays: boolean[]; // last 7 days
   progress: Record<Language, LanguageProgress>;
   badges: Badge[];
+  failedAnswers: Record<Language, number>;
   // Actions
   setUserName: (name: string) => void;
   completeLevel: (lang: Language, levelId: string, score: number) => void;
   updateStreak: () => void;
   awardBadge: (badgeId: string) => void;
   getLanguageProgress: (lang: Language) => number;
+  trackFailedAnswer: (lang: Language) => void;
+  clearStore: () => void;
 }
 
 const defaultProgress: Record<Language, LanguageProgress> = {
@@ -59,7 +62,13 @@ const defaultBadges: Badge[] = [
   { id: 'all-languages', name: 'Polyglot', description: 'Complete a level in each language', icon: 'globe', earned: false },
 ];
 
-const TOTAL_LEVELS_PER_LANG = 15;
+import { curriculum } from '@/data/curriculum';
+import { usePetStore } from './usePetStore';
+
+const getTotalLevels = (lang: string): number => {
+  return curriculum[lang]?.levels?.length ?? 15;
+};
+
 
 export const useAppStore = create<AppState>()(
   persist(
@@ -71,6 +80,18 @@ export const useAppStore = create<AppState>()(
       streakDays: [false, false, false, false, false, false, false],
       progress: defaultProgress,
       badges: defaultBadges,
+      failedAnswers: { html: 0, css: 0, js: 0, php: 0 },
+
+      clearStore: () => set({
+        userName: 'Learner',
+        avatar: 'coder',
+        streak: 0,
+        lastActiveDate: '',
+        streakDays: [false, false, false, false, false, false, false],
+        progress: defaultProgress,
+        badges: defaultBadges,
+        failedAnswers: { html: 0, css: 0, js: 0, php: 0 },
+      }),
 
       setUserName: (name: string) => set({ userName: name }),
 
@@ -82,7 +103,7 @@ export const useAppStore = create<AppState>()(
           [levelId]: { completed: true, score },
         };
         const completedCount = Object.keys(langProgress.completedLevels).length;
-        langProgress.overallProgress = Math.round((completedCount / TOTAL_LEVELS_PER_LANG) * 100);
+        langProgress.overallProgress = Math.round((completedCount / getTotalLevels(lang)) * 100);
 
         const newProgress = { ...state.progress, [lang]: langProgress };
         set({ progress: newProgress });
@@ -130,6 +151,15 @@ export const useAppStore = create<AppState>()(
         }
 
         set({ badges });
+
+        // Add Pet XP based on score (100% score = 100 XP, capped and scaled)
+        // Ensure store is accessed safely (in case it's not mounted yet, though it should be)
+        try {
+          const xpEarned = Math.round(score * 0.5); // e.g., 50 XP for a perfect score
+          usePetStore.getState().addPetXP(Math.max(10, xpEarned)); // Minimum 10 XP
+        } catch (e) {
+          console.error('Failed to add pet XP', e);
+        }
 
         // Update streak
         get().updateStreak();
@@ -183,6 +213,15 @@ export const useAppStore = create<AppState>()(
 
       getLanguageProgress: (lang: Language) => {
         return get().progress[lang].overallProgress;
+      },
+
+      trackFailedAnswer: (lang: Language) => {
+        set(state => ({
+          failedAnswers: {
+            ...state.failedAnswers,
+            [lang]: (state.failedAnswers[lang] || 0) + 1,
+          },
+        }));
       },
     }),
     {

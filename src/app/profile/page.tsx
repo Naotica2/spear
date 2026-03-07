@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import { useAppStore, Language } from '@/store/useAppStore';
+import { useAuthStore } from '@/store/useAuthStore';
 import GlassCard from '@/components/ui/GlassCard';
 import { LanguageMascot, StreakFire, BadgeIcon } from '@/components/illustrations/Mascots';
 import { getSupabase } from '@/lib/supabase';
@@ -48,14 +50,14 @@ function ProgressRing({
             }}
         >
             <div className="relative" style={{ width: size, height: size }}>
-                <svg width={size} height={size} className="-rotate-90">
+                <svg width={size} height={size} className="transform -rotate-90">
                     {/* Background circle */}
                     <circle
                         cx={size / 2}
                         cy={size / 2}
                         r={radius}
                         fill="none"
-                        stroke="rgba(0,0,0,0.06)"
+                        stroke="rgba(0,0,0,0.05)"
                         strokeWidth={strokeWidth}
                     />
                     {/* Progress circle */}
@@ -70,13 +72,13 @@ function ProgressRing({
                         strokeDasharray={circumference}
                         initial={{ strokeDashoffset: circumference }}
                         animate={{ strokeDashoffset: offset }}
-                        transition={{ duration: 1.5, ease: [0.25, 0.46, 0.45, 0.94], delay: delay + 0.2 }}
+                        transition={{ duration: 1, delay: delay + 0.3, ease: [0.65, 0, 0.35, 1] }}
                     />
                 </svg>
                 {/* Center text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <LanguageMascot lang={lang} size={32} animate={false} />
-                    <span className="text-sm font-bold" style={{ color }}>{progress}%</span>
+                    <LanguageMascot lang={lang as Language} size={28} />
+                    <span className="text-xs font-bold mt-0.5" style={{ color }}>{progress}%</span>
                 </div>
             </div>
             <span className="text-xs font-semibold text-text-secondary">{label}</span>
@@ -86,18 +88,26 @@ function ProgressRing({
 
 export default function ProfilePage() {
     const { userName, setUserName, streak, streakDays, progress, badges } = useAppStore();
+    const { user } = useAuthStore();
     const [mounted, setMounted] = useState(false);
     const [editing, setEditing] = useState(false);
-    const [editName, setEditName] = useState(userName);
     const [saving, setSaving] = useState(false);
+
+    // Sync auth name to app store on mount
+    const displayName = user?.name || userName;
+    const [editName, setEditName] = useState(displayName);
 
     useEffect(() => {
         setMounted(true);
-    }, []);
+        // If auth user has a name and it's different from app store, sync it
+        if (user?.name && user.name !== userName) {
+            setUserName(user.name);
+        }
+    }, [user, userName, setUserName]);
 
     useEffect(() => {
-        setEditName(userName);
-    }, [userName]);
+        setEditName(displayName);
+    }, [displayName]);
 
     const handleSaveName = async () => {
         if (!editName.trim()) return;
@@ -126,6 +136,26 @@ export default function ProfilePage() {
 
     return (
         <div className="space-y-8">
+            {/* Minimal Top Bar */}
+            <motion.div
+                className="flex items-center justify-between"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            >
+                <Link
+                    href="/education"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-[var(--radius-button)] glass soft-shadow text-sm font-medium text-text-secondary hover:text-text transition-colors"
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                        <path d="M19 12H5M12 19L5 12L12 5" />
+                    </svg>
+                    Back to Education
+                </Link>
+            </motion.div>
+
+
+
             {/* Profile Header */}
             <motion.div
                 className="text-center"
@@ -185,7 +215,7 @@ export default function ProfilePage() {
                                 )}
                             </motion.button>
                             <motion.button
-                                onClick={() => { setEditing(false); setEditName(userName); }}
+                                onClick={() => { setEditing(false); setEditName(displayName); }}
                                 className="w-10 h-10 rounded-xl bg-white/50 text-text-secondary flex items-center justify-center cursor-pointer"
                                 whileTap={{ scale: 0.9 }}
                             >
@@ -202,7 +232,7 @@ export default function ProfilePage() {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9 }}
                         >
-                            <h1 className="text-2xl font-extrabold text-text">{userName}</h1>
+                            <h1 className="text-2xl font-extrabold text-text">{displayName}</h1>
                             <motion.button
                                 onClick={() => setEditing(true)}
                                 className="w-8 h-8 rounded-lg bg-white/40 hover:bg-white/60 flex items-center justify-center cursor-pointer transition-colors"

@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Lightbulb } from 'lucide-react';
 
 interface FillInBlankProps {
     instruction: string;
@@ -81,10 +82,10 @@ export default function FillInBlank({
             <div className="flex items-center gap-3">
                 <motion.button
                     onClick={() => setShowHint(!showHint)}
-                    className="px-4 py-2 rounded-[var(--radius-button)] text-sm font-medium text-text-secondary bg-white/50 hover:bg-white/70 transition-colors cursor-pointer"
+                    className="px-4 py-2 rounded-[var(--radius-button)] text-sm font-medium text-text-secondary glass hover:bg-white/20 dark:hover:bg-slate-700 transition-colors cursor-pointer flex items-center gap-2"
                     whileTap={{ scale: 0.95 }}
                 >
-                    💡 Hint
+                    <Lightbulb className="w-5 h-5" /> Hint
                 </motion.button>
 
                 <motion.button
@@ -101,11 +102,12 @@ export default function FillInBlank({
             {/* Hint */}
             {showHint && (
                 <motion.div
-                    className="bg-warning/10 border border-warning/30 rounded-[var(--radius-button)] p-3 text-sm text-text-secondary"
+                    className="bg-warning/10 border border-warning/30 rounded-[var(--radius-button)] p-3 text-sm text-text-secondary flex items-start gap-2"
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                 >
-                    💡 {hint}
+                    <Lightbulb className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span>{hint}</span>
                 </motion.div>
             )}
         </div>

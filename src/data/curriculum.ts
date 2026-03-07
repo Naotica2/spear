@@ -11,7 +11,7 @@ export const curriculum: Record<string, LanguageCurriculum> = {
         name: 'HTML',
         icon: '🏷️',
         color: 'var(--color-html)',
-        description: 'The backbone of every website',
+        description: 'Fondasi utama setiap website',
         levels: htmlLevels,
     },
     css: {
@@ -19,7 +19,7 @@ export const curriculum: Record<string, LanguageCurriculum> = {
         name: 'CSS',
         icon: '🎨',
         color: 'var(--color-css)',
-        description: 'Style and beautify the web',
+        description: 'Mengatur tampilan dan mempercantik website',
         levels: cssLevels,
     },
     js: {
@@ -27,7 +27,7 @@ export const curriculum: Record<string, LanguageCurriculum> = {
         name: 'JavaScript',
         icon: '⚡',
         color: 'var(--color-js)',
-        description: 'Make the web interactive',
+        description: 'Membuat website menjadi interaktif',
         levels: jsLevels,
     },
     php: {

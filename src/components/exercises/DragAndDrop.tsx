@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, Reorder } from 'framer-motion';
+import { motion, Reorder, AnimatePresence } from 'framer-motion';
+import { MoveVertical, Lightbulb } from 'lucide-react';
 
 interface DragAndDropProps {
     instruction: string;
@@ -49,14 +50,9 @@ export default function DragAndDrop({
                 {instruction}
             </motion.h3>
 
-            <motion.p
-                className="text-sm text-text-secondary text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 }}
-            >
-                ↕️ Drag to reorder the code tokens
-            </motion.p>
+            <div className="mb-4 text-xs font-medium text-text-secondary/60 uppercase tracking-widest flex items-center justify-center gap-2">
+                <MoveVertical size={14} /> Drag to reorder the code tokens
+            </div>
 
             {/* Drag area */}
             <motion.div
@@ -104,10 +100,10 @@ export default function DragAndDrop({
             <div className="flex items-center gap-3">
                 <motion.button
                     onClick={() => setShowHint(!showHint)}
-                    className="px-4 py-2 rounded-[var(--radius-button)] text-sm font-medium text-text-secondary bg-white/50 hover:bg-white/70 transition-colors cursor-pointer"
+                    className="px-4 py-2 rounded-[var(--radius-button)] text-sm font-medium text-text-secondary glass hover:bg-white/20 dark:hover:bg-slate-700 transition-colors cursor-pointer flex items-center gap-2"
                     whileTap={{ scale: 0.95 }}
                 >
-                    💡 Hint
+                    <Lightbulb className="w-5 h-5" /> Hint
                 </motion.button>
 
                 <motion.button
@@ -123,11 +119,12 @@ export default function DragAndDrop({
 
             {showHint && (
                 <motion.div
-                    className="bg-warning/10 border border-warning/30 rounded-[var(--radius-button)] p-3 text-sm text-text-secondary"
+                    className="bg-warning/10 border border-warning/30 rounded-[var(--radius-button)] p-3 text-sm text-text-secondary flex items-start gap-2"
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                 >
-                    💡 {hint}
+                    <Lightbulb className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span>{hint}</span>
                 </motion.div>
             )}
         </div>

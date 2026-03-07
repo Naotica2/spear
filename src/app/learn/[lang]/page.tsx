@@ -9,6 +9,7 @@ import { useAppStore, Language } from '@/store/useAppStore';
 import GlassCard from '@/components/ui/GlassCard';
 import ProgressBar from '@/components/ui/ProgressBar';
 import { LanguageMascot } from '@/components/illustrations/Mascots';
+import AuthGuard from '@/components/auth/AuthGuard';
 
 const langColors: Record<string, string> = {
     html: '#F06D5B',
@@ -17,7 +18,7 @@ const langColors: Record<string, string> = {
     php: '#9B8FE6',
 };
 
-export default function LearningPathPage() {
+function LearningPathContent() {
     const params = useParams();
     const router = useRouter();
     const lang = params.lang as string;
@@ -28,7 +29,7 @@ export default function LearningPathPage() {
         return (
             <div className="text-center py-20">
                 <h2 className="text-2xl font-bold">Language not found</h2>
-                <Link href="/" className="text-primary mt-4 inline-block">← Go home</Link>
+                <Link href="/education" className="text-primary mt-4 inline-block">← Go back</Link>
             </div>
         );
     }
@@ -45,10 +46,10 @@ export default function LearningPathPage() {
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             >
                 <button
-                    onClick={() => router.push('/')}
+                    onClick={() => router.push('/education')}
                     className="text-text-secondary hover:text-text mb-4 flex items-center gap-2 cursor-pointer text-sm font-medium"
                 >
-                    ← Back to Dashboard
+                    ← Back to Education
                 </button>
 
                 <div className="flex items-center gap-4 mb-4">
@@ -155,5 +156,13 @@ export default function LearningPathPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function LearningPathPage() {
+    return (
+        <AuthGuard>
+            <LearningPathContent />
+        </AuthGuard>
     );
 }

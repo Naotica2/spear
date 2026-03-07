@@ -425,35 +425,87 @@ export function BadgeIcon({ type, earned, size = 40 }: { type: string; earned: b
     return <>{icons[type] || icons['first-lesson']}</>;
 }
 
-/* ====== Success / Error Illustrations ====== */
+/* ====== Success / Error Illustrations — Premium ====== */
 export function SuccessIllustration({ size = 80 }: { size?: number }) {
     return (
         <motion.svg
             width={size}
             height={size}
-            viewBox="0 0 100 100"
+            viewBox="0 0 120 120"
             fill="none"
-            initial={{ scale: 0, rotate: -30 }}
+            initial={{ scale: 0, rotate: -20 }}
             animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 12 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
         >
-            <circle cx="50" cy="50" r="45" fill="#8CD790" />
-            <circle cx="50" cy="50" r="38" fill="#9FE0A3" />
+            <defs>
+                <linearGradient id="successGrad" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#6DD5C4" />
+                    <stop offset="0.5" stopColor="#8CD790" />
+                    <stop offset="1" stopColor="#6DD5C4" />
+                </linearGradient>
+                <linearGradient id="successInner" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#A8E6A3" />
+                    <stop offset="1" stopColor="#6DD5C4" />
+                </linearGradient>
+                <filter id="successGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="6" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+            </defs>
+
+            {/* Glow ring */}
+            <motion.circle
+                cx="60" cy="60" r="54"
+                stroke="url(#successGrad)" strokeWidth="3" fill="none" opacity="0.3"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: [1, 1.08, 1], opacity: [0.2, 0.4, 0.2] }}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            />
+
+            {/* Outer circle */}
+            <circle cx="60" cy="60" r="46" fill="url(#successGrad)" />
+
+            {/* Inner circle */}
+            <circle cx="60" cy="60" r="38" fill="url(#successInner)" />
+
+            {/* Shine arc */}
             <motion.path
-                d="M30 50 L45 65 L72 35"
+                d="M38 32 Q48 22 62 26"
+                stroke="white" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.4"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+            />
+
+            {/* Checkmark with path animation */}
+            <motion.path
+                d="M38 60 L52 74 L82 42"
                 stroke="white"
-                strokeWidth="6"
+                strokeWidth="7"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 fill="none"
+                filter="url(#successGlow)"
                 initial={{ pathLength: 0 }}
                 animate={{ pathLength: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.6, delay: 0.3, ease: [0.65, 0, 0.35, 1] }}
             />
-            {/* Sparkles */}
-            <motion.circle cx="80" cy="20" r="4" fill="#F5C87A" animate={{ scale: [0, 1, 0] }} transition={{ duration: 1, repeat: Infinity, delay: 0.5 }} />
-            <motion.circle cx="15" cy="30" r="3" fill="#7EB8F0" animate={{ scale: [0, 1, 0] }} transition={{ duration: 1, repeat: Infinity, delay: 0.8 }} />
-            <motion.circle cx="85" cy="70" r="3" fill="#9B8FE6" animate={{ scale: [0, 1, 0] }} transition={{ duration: 1, repeat: Infinity, delay: 1.1 }} />
+
+            {/* Confetti particles */}
+            <motion.circle cx="98" cy="18" r="4" fill="#F5C87A" initial={{ scale: 0 }} animate={{ scale: [0, 1.2, 0], y: [0, -6, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }} />
+            <motion.circle cx="14" cy="28" r="3.5" fill="#7EB8F0" initial={{ scale: 0 }} animate={{ scale: [0, 1.2, 0], y: [0, -4, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.8 }} />
+            <motion.circle cx="102" cy="85" r="3" fill="#9B8FE6" initial={{ scale: 0 }} animate={{ scale: [0, 1.2, 0], y: [0, -5, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 1.1 }} />
+            <motion.rect x="8" y="75" width="6" height="6" rx="1" fill="#F06D5B" initial={{ scale: 0, rotate: 0 }} animate={{ scale: [0, 1, 0], rotate: [0, 45, 90] }} transition={{ duration: 1.8, repeat: Infinity, delay: 0.6 }} />
+            <motion.polygon points="108,50 112,58 104,58" fill="#F5C87A" initial={{ scale: 0 }} animate={{ scale: [0, 1.3, 0], rotate: [0, 180, 360] }} transition={{ duration: 2, repeat: Infinity, delay: 0.9 }} />
+
+            {/* Star sparkle */}
+            <motion.g
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1.2, 0], opacity: [0, 1, 0] }}
+                transition={{ duration: 1.2, repeat: Infinity, delay: 1.4 }}
+            >
+                <polygon points="18,55 20,50 22,55 27,53 22,55 24,60 22,55 17,57" fill="white" opacity="0.8" />
+            </motion.g>
         </motion.svg>
     );
 }
@@ -463,26 +515,89 @@ export function ErrorIllustration({ size = 80 }: { size?: number }) {
         <motion.svg
             width={size}
             height={size}
-            viewBox="0 0 100 100"
+            viewBox="0 0 120 120"
             fill="none"
-            initial={{ scale: 0, rotate: 30 }}
+            initial={{ scale: 0, rotate: 20 }}
             animate={{ scale: 1, rotate: 0 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 12 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 12 }}
         >
-            <circle cx="50" cy="50" r="45" fill="#F0918C" />
-            <circle cx="50" cy="50" r="38" fill="#F5A9A5" />
-            {/* Lightbulb for "hint" */}
+            <defs>
+                <linearGradient id="errorGrad" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#F06D5B" />
+                    <stop offset="0.5" stopColor="#F0918C" />
+                    <stop offset="1" stopColor="#F06D5B" />
+                </linearGradient>
+                <linearGradient id="errorInner" x1="20" y1="20" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#F5B8B4" />
+                    <stop offset="1" stopColor="#F0918C" />
+                </linearGradient>
+                <filter id="errorGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+            </defs>
+
+            {/* Glow ring */}
+            <motion.circle
+                cx="60" cy="60" r="54"
+                stroke="url(#errorGrad)" strokeWidth="3" fill="none" opacity="0.3"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: [1, 1.06, 1], opacity: [0.2, 0.35, 0.2] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+            />
+
+            {/* Outer circle */}
+            <circle cx="60" cy="60" r="46" fill="url(#errorGrad)" />
+
+            {/* Inner circle */}
+            <circle cx="60" cy="60" r="38" fill="url(#errorInner)" />
+
+            {/* Shine arc */}
+            <motion.path
+                d="M38 32 Q48 22 62 26"
+                stroke="white" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.3"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+            />
+
+            {/* X mark — animated */}
             <motion.g
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                style={{ originX: '50px', originY: '50px' }}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 15, delay: 0.2 }}
             >
-                <ellipse cx="50" cy="40" rx="14" ry="16" fill="#F5C87A" />
-                <rect x="44" y="55" width="12" height="8" rx="2" fill="#E8B84D" />
-                <rect x="46" y="62" width="8" height="3" rx="1" fill="#E8B84D" />
-                <line x1="50" y1="28" x2="50" y2="22" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                <line x1="38" y1="32" x2="34" y2="28" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                <line x1="62" y1="32" x2="66" y2="28" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                <motion.line
+                    x1="42" y1="42" x2="78" y2="78"
+                    stroke="white" strokeWidth="7" strokeLinecap="round"
+                    filter="url(#errorGlow)"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.4, delay: 0.3 }}
+                />
+                <motion.line
+                    x1="78" y1="42" x2="42" y2="78"
+                    stroke="white" strokeWidth="7" strokeLinecap="round"
+                    filter="url(#errorGlow)"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 0.4, delay: 0.45 }}
+                />
+            </motion.g>
+
+            {/* Floating hint particles */}
+            <motion.circle cx="100" cy="20" r="3.5" fill="#F5C87A" opacity="0.7" animate={{ y: [0, -5, 0], scale: [0.8, 1.1, 0.8] }} transition={{ duration: 2, repeat: Infinity, delay: 0.5 }} />
+            <motion.circle cx="16" cy="30" r="3" fill="#7EB8F0" opacity="0.7" animate={{ y: [0, -4, 0], scale: [0.8, 1.1, 0.8] }} transition={{ duration: 2.2, repeat: Infinity, delay: 0.8 }} />
+            <motion.circle cx="106" cy="90" r="2.5" fill="#9B8FE6" opacity="0.7" animate={{ y: [0, -3, 0], scale: [0.8, 1.1, 0.8] }} transition={{ duration: 2.5, repeat: Infinity, delay: 1 }} />
+
+            {/* Question mark hint */}
+            <motion.g
+                animate={{ y: [0, -3, 0], rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ originX: '14px', originY: '85px' }}
+            >
+                <circle cx="14" cy="85" r="10" fill="#F5C87A" opacity="0.9" />
+                <text x="14" y="90" textAnchor="middle" fontSize="14" fontWeight="bold" fill="white" fontFamily="Inter, sans-serif">?</text>
             </motion.g>
         </motion.svg>
     );

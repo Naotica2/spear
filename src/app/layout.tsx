@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
-
+import { ThemeProvider } from "@/components/theme-provider";
 export const metadata: Metadata = {
-  title: "CodeCraft — Learn to Code, Beautifully",
-  description: "Premium interactive coding education platform. Learn HTML, CSS, JavaScript, and PHP with beautiful animations and gamified lessons.",
-  keywords: ["coding", "education", "HTML", "CSS", "JavaScript", "PHP", "learn programming"],
+  title: "Spear — Learn to Code",
+  description: "Platform pembelajaran coding interaktif. Belajar HTML, CSS, JavaScript, dan PHP dengan animasi keren dan pelajaran bergamifikasi.",
+  keywords: ["coding", "education", "HTML", "CSS", "JavaScript", "PHP", "learn programming", "spear"],
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
@@ -22,7 +22,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <ClientLayout>{children}</ClientLayout>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ClientLayout>{children}</ClientLayout>
+        </ThemeProvider>
       </body>
     </html>
   );

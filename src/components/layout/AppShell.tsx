@@ -2,8 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import SpearLogo from '@/components/ui/SpearLogo';
 import { motion } from 'framer-motion';
+import { useAuthStore } from '@/store/useAuthStore';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 /* ===== SVG Nav Icons ===== */
 function HomeIcon({ active }: { active: boolean }) {
@@ -15,12 +18,39 @@ function HomeIcon({ active }: { active: boolean }) {
     );
 }
 
+function EducationIcon({ active }: { active: boolean }) {
+    return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? 'var(--color-primary)' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" />
+        </svg>
+    );
+}
+
 function AboutIcon({ active }: { active: boolean }) {
     return (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? 'var(--color-primary)' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10" />
             <path d="M12 16v-4" />
             <circle cx="12" cy="8" r="0.5" fill={active ? 'var(--color-primary)' : 'currentColor'} />
+        </svg>
+    );
+}
+
+function PlaygroundIcon({ active }: { active: boolean }) {
+    return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? 'var(--color-primary)' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+        </svg>
+    );
+}
+
+function DocsIcon({ active }: { active: boolean }) {
+    return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={active ? 'var(--color-primary)' : 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
         </svg>
     );
 }
@@ -36,40 +66,45 @@ function ProfileIcon({ active }: { active: boolean }) {
 
 /* ===== Logo Icon ===== */
 function LogoIcon() {
-    return (
-        <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
-            <rect width="40" height="40" rx="12" fill="var(--color-primary)" />
-            <path d="M12 14L18 20L12 26" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M22 26H28" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-    );
+    return <SpearLogo size={32} gradientId="sidebarLogo" />;
 }
 
 const navItems = [
-    { href: '/', label: 'Home', Icon: HomeIcon },
+    { href: '/education', label: 'Education', Icon: EducationIcon },
+    { href: '/playground', label: 'Playground', Icon: PlaygroundIcon },
+    { href: '/docs', label: 'Docs', Icon: DocsIcon },
     { href: '/about', label: 'About', Icon: AboutIcon },
     { href: '/profile', label: 'Profile', Icon: ProfileIcon },
 ];
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const router = useRouter();
+    const { isLoggedIn, user, logout } = useAuthStore();
 
     const isActive = (href: string) => {
-        if (href === '/') return pathname === '/';
+        if (href === '/education') return pathname === '/education' || pathname.startsWith('/learn');
+        if (href === '/docs') return pathname.startsWith('/docs');
+        if (href === '/playground') return pathname === '/playground';
         return pathname.startsWith(href);
+    };
+
+    const handleLogout = async () => {
+        await logout();
+        router.push('/');
     };
 
     return (
         <div className="min-h-[100dvh] flex flex-col lg:flex-row relative">
             {/* Desktop Sidebar */}
             <aside className="hidden lg:flex flex-col w-[240px] fixed left-0 top-0 bottom-0 glass-strong p-4 gap-2 z-50">
-                <div className="flex items-center gap-3 p-4 mb-4">
+                <Link href="/" className="flex items-center gap-3 p-4 mb-4">
                     <LogoIcon />
                     <div>
-                        <h1 className="text-xl font-bold text-gradient">CodeCraft</h1>
+                        <h1 className="text-xl font-bold text-gradient">Spear</h1>
                         <p className="text-[10px] text-text-secondary">Learn to code, beautifully</p>
                     </div>
-                </div>
+                </Link>
 
                 <nav className="flex flex-col gap-1 flex-1">
                     {navItems.map((item) => (
@@ -100,13 +135,33 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                     ))}
                 </nav>
 
-                <div className="p-4 glass rounded-[var(--radius-button)] text-center">
-                    <p className="text-xs text-text-secondary">
-                        <svg width="12" height="12" viewBox="0 0 16 16" fill="#F06D5B" className="inline mr-1 -mt-0.5">
-                            <path d="M8 2 Q10 0 12 2 Q14 4 8 9 Q2 4 4 2 Q6 0 8 2Z" />
-                        </svg>
-                        Made with love
-                    </p>
+                {/* User / Auth info */}
+                {isLoggedIn && user ? (
+                    <div className="p-3 glass rounded-[var(--radius-button)]">
+                        <div className="flex items-center gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">
+                                {user.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <p className="text-xs font-bold text-text truncate">{user.name}</p>
+                                <p className="text-[10px] text-text-secondary truncate">{user.email}</p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="w-full text-xs text-text-secondary hover:text-error py-1.5 rounded-lg hover:bg-error/5 transition-colors cursor-pointer font-medium"
+                        >
+                            Sign Out
+                        </button>
+                    </div>
+                ) : (
+                    <Link href="/auth" className="block p-4 glass rounded-[var(--radius-button)] text-center">
+                        <p className="text-xs text-primary font-semibold">Sign In →</p>
+                    </Link>
+                )}
+
+                <div className="mt-auto">
+                    <ThemeToggle />
                 </div>
             </aside>
 
@@ -120,12 +175,34 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             {/* Mobile Bottom Nav */}
             <nav className="lg:hidden fixed bottom-0 left-0 right-0 glass-strong border-t border-white/20 z-50 safe-area-bottom">
                 <div className="flex items-center justify-around px-2 py-2">
+                    <Link href="/" className="relative">
+                        <motion.div
+                            className={`
+                  flex flex-col items-center gap-0.5 px-4 py-2 rounded-2xl
+                  transition-colors duration-200 min-w-[56px]
+                  ${pathname === '/' ? 'text-primary' : 'text-text-secondary'}
+                `}
+                            whileTap={{ scale: 0.9 }}
+                        >
+                            {pathname === '/' && (
+                                <motion.div
+                                    className="absolute inset-0 bg-primary/10 rounded-2xl"
+                                    layoutId="mobile-nav-active"
+                                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                                />
+                            )}
+                            <div className="relative z-10">
+                                <HomeIcon active={pathname === '/'} />
+                            </div>
+                            <span className="text-[10px] font-medium relative z-10">Home</span>
+                        </motion.div>
+                    </Link>
                     {navItems.map((item) => (
                         <Link key={item.href} href={item.href} className="relative">
                             <motion.div
                                 className={`
-                  flex flex-col items-center gap-0.5 px-5 py-2 rounded-2xl
-                  transition-colors duration-200 min-w-[64px]
+                  flex flex-col items-center gap-0.5 px-4 py-2 rounded-2xl
+                  transition-colors duration-200 min-w-[56px]
                   ${isActive(item.href)
                                         ? 'text-primary'
                                         : 'text-text-secondary'
