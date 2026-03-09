@@ -16,6 +16,7 @@ const langColors: Record<string, string> = {
     css: '#7EB8F0',
     js: '#F5C87A',
     php: '#9B8FE6',
+    mysql: '#3B82F6',
 };
 
 function LearningPathContent() {
@@ -41,6 +42,7 @@ function LearningPathContent() {
         <div className="space-y-8">
             {/* Header */}
             <motion.div
+                className="w-full"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
@@ -52,22 +54,24 @@ function LearningPathContent() {
                     ← Back to Education
                 </button>
 
-                <div className="flex items-center gap-4 mb-4">
-                    <LanguageMascot lang={lang} size={64} />
-                    <div>
+                <div className="flex items-center gap-4 mb-4 w-full">
+                    <LanguageMascot lang={lang} size={64} className="shrink-0" />
+                    <div className="flex-1 min-w-0">
                         <h1 className="text-3xl font-extrabold" style={{ color }}>
                             {langData.name}
                         </h1>
-                        <p className="text-text-secondary">{langData.description}</p>
+                        <p className="text-text-secondary truncate">{langData.description}</p>
                     </div>
                 </div>
 
-                <ProgressBar
-                    progress={langProgress?.overallProgress || 0}
-                    color={color}
-                    height={10}
-                    showLabel
-                />
+                <div className="w-full">
+                    <ProgressBar
+                        progress={langProgress?.overallProgress || 0}
+                        color={color}
+                        height={10}
+                        showLabel
+                    />
+                </div>
             </motion.div>
 
             {/* Level Path */}

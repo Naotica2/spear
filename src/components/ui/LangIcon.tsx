@@ -44,6 +44,15 @@ export default function LangIcon({ lang, size = 24, className = '' }: LangIconPr
                     <path d="M14 9H16C16.8 9 17.5 9.7 17.5 10.5C17.5 11.3 16.8 12 16 12H14.5L14 14" stroke="#9B8FE6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             );
+        case 'mysql':
+            return (
+                <svg width={s} height={s} viewBox="0 0 24 24" fill="none" className={className}>
+                    <ellipse cx="12" cy="6" rx="8" ry="3" fill="#3B82F6" opacity="0.15" />
+                    <ellipse cx="12" cy="6" rx="8" ry="3" stroke="#3B82F6" strokeWidth="1.5" />
+                    <path d="M4 6V18C4 19.6569 7.58172 21 12 21C16.4183 21 20 19.6569 20 18V6" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M4 12C4 13.6569 7.58172 15 12 15C16.4183 15 20 13.6569 20 12" stroke="#3B82F6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            );
         default:
             return (
                 <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className={className}>

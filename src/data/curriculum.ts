@@ -4,6 +4,7 @@ import { htmlLevels } from './html-curriculum';
 import { cssLevels } from './css-curriculum';
 import { jsLevels } from './js-curriculum';
 import { phpLevels } from './php-curriculum';
+import { mysqlLevels } from './mysql-curriculum';
 
 export const curriculum: Record<string, LanguageCurriculum> = {
     html: {
@@ -37,5 +38,13 @@ export const curriculum: Record<string, LanguageCurriculum> = {
         color: 'var(--color-php)',
         description: 'Server-side web development',
         levels: phpLevels,
+    },
+    mysql: {
+        id: 'mysql',
+        name: 'MySQL',
+        icon: '🐬',
+        color: '#3B82F6',
+        description: 'Powering the Web',
+        levels: mysqlLevels,
     },
 };

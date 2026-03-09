@@ -6,13 +6,14 @@ import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { getLanguageById } from '@/data/docs-data';
 import DocsSidebar from '@/components/docs/DocsSidebar';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot } from '@/components/illustrations/Mascots';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot } from '@/components/illustrations/Mascots';
 
 const mascotMap: Record<string, React.FC<{ size?: number; animate?: boolean }>> = {
     html: HTMLMascot,
     css: CSSMascot,
     js: JSMascot,
     php: PHPMascot,
+    mysql: MySQLMascot,
 };
 
 export default function DocsLangPage() {

@@ -259,6 +259,77 @@ export function PHPMascot({ size = 80, className = '', animate = true }: MascotP
     );
 }
 
+/* ====== MySQL Mascot — Cute Dolphin Character ====== */
+export function MySQLMascot({ size = 80, className = '', animate = true }: MascotProps) {
+    return (
+        <motion.svg
+            width={size}
+            height={size}
+            viewBox="0 0 120 120"
+            fill="none"
+            className={className}
+            animate={animate ? { y: [0, -6, 0] } : undefined}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
+        >
+            {/* Top Fin */}
+            <motion.path
+                d="M45 40 Q55 20 65 25 Q60 35 60 40 Z"
+                fill="#2563EB"
+                stroke="#1E40AF"
+                strokeWidth="2"
+                animate={animate ? { rotate: [0, 5, 0] } : undefined}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ originX: '55px', originY: '40px' }}
+            />
+            {/* Tail */}
+            <motion.path
+                d="M20 70 Q5 60 10 45 Q15 65 25 70 Q10 80 5 95 Q15 80 20 75 Z"
+                fill="#3B82F6"
+                stroke="#1E40AF"
+                strokeWidth="2"
+                animate={animate ? { rotate: [0, -10, 0] } : undefined}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ originX: '20px', originY: '70px' }}
+            />
+            {/* Body — Dolphin shape with arched back and snout */}
+            <motion.path
+                d="M20 70 Q30 35 70 35 Q90 35 100 50 Q115 55 110 65 Q100 65 95 65 Q90 85 60 90 Q30 90 20 70 Z"
+                fill="#3B82F6"
+                stroke="#1E40AF"
+                strokeWidth="2"
+            />
+            {/* Belly highlight */}
+            <path
+                d="M23 72 Q50 87 85 75 Q92 70 95 65 Q90 80 60 85 Q30 85 23 72 Z"
+                fill="#60A5FA"
+                opacity="0.8"
+            />
+
+            {/* Side Fin */}
+            <motion.path
+                d="M45 65 Q55 85 45 95 Q40 85 45 65 Z"
+                fill="#2563EB"
+                stroke="#1E40AF"
+                strokeWidth="1.5"
+                animate={animate ? { rotate: [0, 15, 0] } : undefined}
+                transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}
+                style={{ originX: '45px', originY: '65px' }}
+            />
+
+            {/* Eye */}
+            <circle cx="85" cy="50" r="5" fill="white" />
+            <circle cx="86" cy="49" r="2.5" fill="#1E293B" />
+            <circle cx="87" cy="48" r="1" fill="white" />
+
+            {/* Smile */}
+            <path d="M90 60 Q95 62 100 58" stroke="#1E293B" strokeWidth="2" fill="none" strokeLinecap="round" />
+
+            {/* Cheek */}
+            <circle cx="80" cy="58" r="3" fill="#93C5FD" opacity="0.8" />
+        </motion.svg>
+    );
+}
+
 /* ====== Language-agnostic Mascot Selector ====== */
 export function LanguageMascot({ lang, ...props }: MascotProps & { lang: string }) {
     switch (lang) {
@@ -266,6 +337,7 @@ export function LanguageMascot({ lang, ...props }: MascotProps & { lang: string 
         case 'css': return <CSSMascot {...props} />;
         case 'js': return <JSMascot {...props} />;
         case 'php': return <PHPMascot {...props} />;
+        case 'mysql': return <MySQLMascot {...props} />;
         default: return <HTMLMascot {...props} />;
     }
 }
@@ -392,6 +464,12 @@ export function BadgeIcon({ type, earned, size = 40 }: { type: string; earned: b
                 <text x="7" y="30" fontSize="14" fontWeight="bold" fill="white" fontFamily="monospace">PHP</text>
             </svg>
         ),
+        'mysql-master': (
+            <svg width={size} height={size} viewBox="0 0 48 48" fill="none" opacity={opacity}>
+                <circle cx="24" cy="24" r="20" fill={baseColor || '#3B82F6'} />
+                <text x="13" y="30" fontSize="16" fontWeight="bold" fill="white" fontFamily="monospace">DB</text>
+            </svg>
+        ),
         'streak-3': (
             <svg width={size} height={size} viewBox="0 0 48 48" fill="none" opacity={opacity}>
                 <circle cx="24" cy="24" r="20" fill={baseColor || '#F5C87A'} />
@@ -414,10 +492,11 @@ export function BadgeIcon({ type, earned, size = 40 }: { type: string; earned: b
         'all-languages': (
             <svg width={size} height={size} viewBox="0 0 48 48" fill="none" opacity={opacity}>
                 <circle cx="24" cy="24" r="20" fill={baseColor || '#6DD5C4'} />
-                <circle cx="16" cy="18" r="5" fill={earned ? '#F06D5B' : '#CBD5E1'} />
-                <circle cx="32" cy="18" r="5" fill={earned ? '#7EB8F0' : '#CBD5E1'} />
-                <circle cx="16" cy="30" r="5" fill={earned ? '#F5C87A' : '#CBD5E1'} />
-                <circle cx="32" cy="30" r="5" fill={earned ? '#9B8FE6' : '#CBD5E1'} />
+                <circle cx="24" cy="18" r="4" fill={earned ? '#F06D5B' : '#CBD5E1'} />
+                <circle cx="30" cy="22" r="4" fill={earned ? '#7EB8F0' : '#CBD5E1'} />
+                <circle cx="28" cy="28" r="4" fill={earned ? '#F5C87A' : '#CBD5E1'} />
+                <circle cx="20" cy="28" r="4" fill={earned ? '#9B8FE6' : '#CBD5E1'} />
+                <circle cx="18" cy="22" r="4" fill={earned ? '#3B82F6' : '#CBD5E1'} />
             </svg>
         ),
     };

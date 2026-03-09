@@ -3,7 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type Language = 'html' | 'css' | 'js' | 'php';
+export type Language = 'html' | 'css' | 'js' | 'php' | 'mysql';
 
 export interface LevelProgress {
   completed: boolean;
@@ -48,6 +48,7 @@ const defaultProgress: Record<Language, LanguageProgress> = {
   css: { completedLevels: {}, overallProgress: 0 },
   js: { completedLevels: {}, overallProgress: 0 },
   php: { completedLevels: {}, overallProgress: 0 },
+  mysql: { completedLevels: {}, overallProgress: 0 },
 };
 
 const defaultBadges: Badge[] = [
@@ -56,6 +57,7 @@ const defaultBadges: Badge[] = [
   { id: 'css-master', name: 'CSS Wizard', description: 'Complete all CSS levels', icon: 'css', earned: false },
   { id: 'js-master', name: 'JS Ninja', description: 'Complete all JavaScript levels', icon: 'js', earned: false },
   { id: 'php-master', name: 'PHP Guru', description: 'Complete all PHP levels', icon: 'php', earned: false },
+  { id: 'mysql-master', name: 'MySQL DBA', description: 'Complete all MySQL levels', icon: 'mysql', earned: false },
   { id: 'streak-3', name: 'On Fire!', description: '3-day streak', icon: 'fire', earned: false },
   { id: 'streak-7', name: 'Unstoppable', description: '7-day streak', icon: 'fire-pro', earned: false },
   { id: 'perfect-score', name: 'Perfectionist', description: 'Get 100% on any level', icon: 'perfect', earned: false },
@@ -80,7 +82,7 @@ export const useAppStore = create<AppState>()(
       streakDays: [false, false, false, false, false, false, false],
       progress: defaultProgress,
       badges: defaultBadges,
-      failedAnswers: { html: 0, css: 0, js: 0, php: 0 },
+      failedAnswers: { html: 0, css: 0, js: 0, php: 0, mysql: 0 },
 
       clearStore: () => set({
         userName: 'Learner',
@@ -90,7 +92,7 @@ export const useAppStore = create<AppState>()(
         streakDays: [false, false, false, false, false, false, false],
         progress: defaultProgress,
         badges: defaultBadges,
-        failedAnswers: { html: 0, css: 0, js: 0, php: 0 },
+        failedAnswers: { html: 0, css: 0, js: 0, php: 0, mysql: 0 },
       }),
 
       setUserName: (name: string) => set({ userName: name }),
@@ -137,7 +139,7 @@ export const useAppStore = create<AppState>()(
         }
 
         // Polyglot badge
-        const allLangs: Language[] = ['html', 'css', 'js', 'php'];
+        const allLangs: Language[] = ['html', 'css', 'js', 'php', 'mysql'];
         const hasAllLangs = allLangs.every(l => {
           const p = l === lang ? langProgress : newProgress[l];
           return Object.keys(p.completedLevels).length > 0;

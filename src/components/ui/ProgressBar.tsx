@@ -23,10 +23,9 @@ export default function ProgressBar({
     return (
         <div className={`w-full ${className}`}>
             <div
-                className="w-full rounded-full overflow-hidden"
+                className="w-full rounded-full overflow-hidden bg-slate-200 dark:bg-slate-700/50"
                 style={{
                     height: `${height}px`,
-                    background: 'rgba(0, 0, 0, 0.06)',
                 }}
             >
                 <motion.div

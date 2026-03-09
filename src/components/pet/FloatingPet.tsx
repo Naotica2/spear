@@ -109,8 +109,14 @@ export default function FloatingPet() {
                         {message === '❤️' ? (
                             <span className="text-3xl filter drop-shadow-md">❤️</span>
                         ) : (
-                            <div className="glass-strong text-text font-bold text-sm px-4 py-2 rounded-2xl soft-shadow text-center">
-                                {message}
+                            <div className="relative overflow-visible rounded-2xl px-5 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] glass-strong">
+                                <div className="relative z-10 text-text font-bold text-sm text-center">
+                                    {message}
+                                </div>
+                                <svg className="absolute -bottom-[10px] left-1/2 -translate-x-1/2 drop-shadow-sm text-[var(--color-card-solid)]" width="20" height="12" viewBox="0 0 20 12" fill="none">
+                                    <path d="M0 0 L10 12 L20 0 Z" fill="currentColor" />
+                                    <path d="M0 0 L10 12 L20 0" stroke="rgba(255, 255, 255, 0.1)" strokeWidth="1" />
+                                </svg>
                             </div>
                         )}
                     </motion.div>

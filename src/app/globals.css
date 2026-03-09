@@ -1,25 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #F8FAFC;
-  --color-bg-dark: #E2E8F0;
-  --color-primary: #6DD5C4;
-  --color-primary-dark: #4DC0AD;
-  --color-accent: #7EB8F0;
-  --color-accent-dark: #5A9FE0;
-  --color-success: #8CD790;
-  --color-error: #F0918C;
-  --color-warning: #F5C87A;
-  --color-card: rgba(255, 255, 255, 0.65);
+  --color-bg: #FAFAFA;
+  --color-bg-dark: #F4F4F5;
+  --color-primary: #3B82F6;
+  --color-primary-dark: #2563EB;
+  --color-accent: #6366F1;
+  --color-accent-dark: #4F46E5;
+  --color-success: #22C55E;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+  --color-card: rgba(255, 255, 255, 0.8);
   --color-card-solid: #FFFFFF;
-  --color-text: #1E293B;
-  --color-text-secondary: #64748B;
-  --color-html: #F06D5B;
-  --color-css: #7EB8F0;
-  --color-js: #F5C87A;
-  --color-php: #9B8FE6;
-  --radius-card: 24px;
-  --radius-button: 16px;
+  --color-text: #18181B;
+  --color-text-secondary: #71717A;
+  --color-html: #E34F26;
+  --color-css: #1572B6;
+  --color-js: #F7DF1E;
+  --color-php: #777BB4;
+  --radius-card: 16px;
+  --radius-button: 12px;
   --radius-pill: 9999px;
   --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
@@ -28,23 +28,19 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root.dark {
-  --color-bg: #020617;
-  /* Very deep slate black */
-  --color-bg-dark: #0F172A;
-  --color-primary: #5EEAD4;
-  /* Brighter teal for contrast */
-  --color-primary-dark: #2DD4BF;
-  --color-accent: #93C5FD;
-  /* Lighter blue */
-  --color-accent-dark: #60A5FA;
-  --color-success: #86EFAC;
-  --color-error: #FCA5A5;
-  --color-warning: #FDE047;
-  --color-card: rgba(15, 23, 42, 0.4);
-  /* Stronger glass transparency for dark mode */
-  --color-card-solid: #0F172A;
-  --color-text: #F8FAFC;
-  --color-text-secondary: #94A3B8;
+  --color-bg: #09090B;
+  --color-bg-dark: #18181B;
+  --color-primary: #3B82F6;
+  --color-primary-dark: #60A5FA;
+  --color-accent: #6366F1;
+  --color-accent-dark: #818CF8;
+  --color-success: #4ADE80;
+  --color-error: #F87171;
+  --color-warning: #FBBF24;
+  --color-card: rgba(24, 24, 27, 0.6);
+  --color-card-solid: #18181B;
+  --color-text: #FAFAFA;
+  --color-text-secondary: #A1A1AA;
 }
 
 @layer base {
@@ -119,97 +115,6 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-}
-
-/* Animated gradient orbs */
-.orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: 0;
-  will-change: transform;
-}
-
-.orb-1 {
-  width: 500px;
-  height: 500px;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  top: -10%;
-  left: -5%;
-  animation: orb-float-1 25s ease-in-out infinite;
-}
-
-.orb-2 {
-  width: 400px;
-  height: 400px;
-  background: linear-gradient(135deg, var(--color-warning), var(--color-error));
-  bottom: -10%;
-  right: -5%;
-  animation: orb-float-2 30s ease-in-out infinite;
-}
-
-.orb-3 {
-  width: 350px;
-  height: 350px;
-  background: linear-gradient(135deg, var(--color-php), var(--color-accent));
-  top: 50%;
-  left: 50%;
-  animation: orb-float-3 35s ease-in-out infinite;
-}
-
-/* Dim orbs slightly in dark mode so they are less overwhelming */
-.dark .orb {
-  opacity: 0.15;
-}
-
-@keyframes orb-float-1 {
-
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  33% {
-    transform: translate(80px, 40px) scale(1.1);
-  }
-
-  66% {
-    transform: translate(-40px, 80px) scale(0.95);
-  }
-}
-
-@keyframes orb-float-2 {
-
-  0%,
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  33% {
-    transform: translate(-60px, -40px) scale(1.05);
-  }
-
-  66% {
-    transform: translate(40px, -60px) scale(0.9);
-  }
-}
-
-@keyframes orb-float-3 {
-
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  33% {
-    transform: translate(calc(-50% + 60px), calc(-50% + 60px)) scale(1.08);
-  }
-
-  66% {
-    transform: translate(calc(-50% - 60px), calc(-50% - 40px)) scale(0.92);
   }
 }
 

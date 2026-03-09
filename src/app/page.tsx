@@ -222,7 +222,7 @@ const features = [
   },
   {
     icon: <BadgeIcon type="first-lesson" earned={true} size={36} />,
-    title: '147 Lessons',
+    title: '120+ Lessons',
     desc: '4 bahasa dengan kurikulum lengkap, dari pemula hingga advanced. Materi mendalam di setiap topik.',
     color: '#9B8FE6',
   },
@@ -684,7 +684,7 @@ export default function HomePage() {
               { value: 4, suffix: '', label: 'Technology' },
               { value: 120, suffix: '+', label: 'Lessons' },
               { value: 100, suffix: '%', label: 'Free' },
-              { value: 103, suffix: '', label: 'Docs Topics' },
+              { value: 108, suffix: '', label: 'Docs Topics' },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}

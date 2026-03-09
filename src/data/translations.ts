@@ -149,8 +149,8 @@ export const translations: Record<string, { id: string; en: string }> = {
     },
     'home.faq3.q': { id: 'Bahasa pemrograman apa saja yang tersedia?', en: 'What programming languages are available?' },
     'home.faq3.a': {
-        id: 'Saat ini tersedia HTML, CSS, JavaScript, dan PHP. Setiap bahasa memiliki kurikulum lengkap dari dasar hingga advanced.',
-        en: 'Currently available: HTML, CSS, JavaScript, and PHP. Each language has a complete curriculum from basics to advanced.',
+        id: 'Saat ini tersedia HTML, CSS, JavaScript, PHP, dan MySQL. Setiap bahasa memiliki kurikulum lengkap dari dasar hingga advanced.',
+        en: 'Currently available: HTML, CSS, JavaScript, PHP, and MySQL. Each language has a complete curriculum from basics to advanced.',
     },
     'home.faq4.q': { id: 'Apa itu Playground?', en: 'What is the Playground?' },
     'home.faq4.a': {
@@ -266,4 +266,5 @@ export const translations: Record<string, { id: string; en: string }> = {
     'curriculum.css.desc': { id: 'Percantik dan hiasi tampilan web', en: 'Style and beautify the web' },
     'curriculum.js.desc': { id: 'Buat web jadi interaktif', en: 'Make the web interactive' },
     'curriculum.php.desc': { id: 'Pengembangan web sisi server', en: 'Server-side web development' },
+    'curriculum.mysql.desc': { id: 'Manajemen basis data relasional paling populer', en: 'The most popular relational database management' },
 };

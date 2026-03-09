@@ -65,15 +65,14 @@ export default function CompanionCharacter({
                         className="absolute bottom-full left-1/2 -translate-x-1/2 sm:translate-x-0 mb-6 z-20 w-max max-w-[280px] sm:max-w-xs origin-bottom"
                         style={{ marginLeft: '0px' }}
                     >
-                        <div className="relative overflow-visible rounded-2xl px-5 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] backdrop-blur-md border border-white/60 bg-white/80"
+                        <div className="relative overflow-visible rounded-2xl px-5 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] glass-strong"
                             style={{ color: isSad ? 'var(--color-error)' : 'var(--color-text)' }}>
                             <div className="relative z-10 font-bold text-sm sm:text-base text-center sm:text-left whitespace-normal">
                                 {message}
                             </div>
-                            <div className="absolute inset-0 bg-gradient-to-b from-white/60 to-transparent pointer-events-none rounded-2xl" />
-                            <svg className="absolute -bottom-[10px] left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-6 drop-shadow-sm" width="20" height="12" viewBox="0 0 20 12" fill="none">
-                                <path d="M0 0 L10 12 L20 0 Z" fill="rgba(255, 255, 255, 0.9)" />
-                                <path d="M0 0 L10 12 L20 0" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1" />
+                            <svg className="absolute -bottom-[10px] left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-6 drop-shadow-sm text-[var(--color-card-solid)]" width="20" height="12" viewBox="0 0 20 12" fill="none">
+                                <path d="M0 0 L10 12 L20 0 Z" fill="currentColor" />
+                                <path d="M0 0 L10 12 L20 0" stroke="rgba(255, 255, 255, 0.1)" strokeWidth="1" />
                             </svg>
                         </div>
                     </motion.div>

@@ -20,6 +20,7 @@ import { htmlTopics } from './docs/html-docs';
 import { cssTopics } from './docs/css-docs';
 import { jsTopics } from './docs/js-docs';
 import { phpTopics } from './docs/php-docs';
+import { mysqlTopics } from './docs/mysql-docs';
 
 export const docsLanguages: DocsLanguage[] = [
   {
@@ -53,6 +54,14 @@ export const docsLanguages: DocsLanguage[] = [
     icon: '🐘',
     description: 'PHP — bahasa server-side untuk web development.',
     topics: phpTopics,
+  },
+  {
+    id: 'mysql',
+    name: 'MySQL',
+    color: '#3B82F6',
+    icon: '🐬',
+    description: 'MySQL — Solusi Database Terpercaya untuk Skalabilitas Tinggi.',
+    topics: mysqlTopics,
   },
 ];
 

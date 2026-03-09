@@ -4,13 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { docsLanguages } from '@/data/docs-data';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot } from '@/components/illustrations/Mascots';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot } from '@/components/illustrations/Mascots';
 
 const mascotMap: Record<string, React.FC<{ size?: number; animate?: boolean }>> = {
     html: HTMLMascot,
     css: CSSMascot,
     js: JSMascot,
     php: PHPMascot,
+    mysql: MySQLMascot,
 };
 
 export default function DocsPage() {

@@ -32,11 +32,7 @@ function FooterLogo() {
 export default function Footer() {
     return (
         <footer className="relative border-t border-white/10 bg-[#0F172A] text-white overflow-hidden">
-            {/* Decorative gradient blobs */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="absolute -top-20 -left-20 w-72 h-72 bg-primary/8 rounded-full blur-[100px]" />
-                <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-accent/8 rounded-full blur-[100px]" />
-            </div>
+            {/* Removed decorative gradient blobs that impact mobile performance */}
 
             <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
                 {/* Main footer content */}
@@ -118,20 +114,10 @@ export default function Footer() {
                 <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
                 {/* Bottom bar */}
-                <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="py-6 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3">
                     <p className="text-xs text-slate-500">
                         © {new Date().getFullYear()} Spear. All rights reserved.
                     </p>
-                    <div className="flex items-center gap-1 text-xs text-slate-500">
-                        <span>Made with</span>
-                        <motion.span
-                            animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                            ❤️
-                        </motion.span>
-                        <span>for learners everywhere</span>
-                    </div>
                 </div>
             </div>
         </footer>

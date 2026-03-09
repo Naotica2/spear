@@ -8,7 +8,7 @@ import ProgressBar from '@/components/ui/ProgressBar';
 import { useAppStore } from '@/store/useAppStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { curriculum } from '@/data/curriculum';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, StreakFire } from '@/components/illustrations/Mascots';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot, StreakFire } from '@/components/illustrations/Mascots';
 import AuthGuard from '@/components/auth/AuthGuard';
 import { useT } from '@/store/useLanguageStore';
 import DailyQuest from '@/components/quest/DailyQuest';
@@ -18,6 +18,7 @@ const langColors: Record<string, string> = {
     css: '#7EB8F0',
     js: '#F5C87A',
     php: '#9B8FE6',
+    mysql: '#3B82F6',
 };
 
 const langMascots: Record<string, React.FC<{ size?: number; animate?: boolean }>> = {
@@ -25,6 +26,7 @@ const langMascots: Record<string, React.FC<{ size?: number; animate?: boolean }>
     css: CSSMascot,
     js: JSMascot,
     php: PHPMascot,
+    mysql: MySQLMascot,
 };
 
 function EducationContent() {
@@ -171,7 +173,7 @@ function EducationContent() {
                     },
                     {
                         label: t('edu.languages'),
-                        value: `${Object.values(progress).filter(p => Object.keys(p.completedLevels).length > 0).length}/4`,
+                        value: `${Object.values(progress).filter(p => Object.keys(p.completedLevels).length > 0).length}/5`,
                         stat: 'languages' as const,
                         bg: 'rgba(126, 184, 240, 0.1)',
                     },
@@ -208,7 +210,7 @@ function EducationContent() {
             </div>
 
             {/* Failed Answers Stats */}
-            {(failedAnswers.html + failedAnswers.css + failedAnswers.js + failedAnswers.php) > 0 && (
+            {(failedAnswers.html + failedAnswers.css + failedAnswers.js + failedAnswers.php + (failedAnswers.mysql || 0)) > 0 && (
                 <GlassCard delay={0.55}>
                     <div className="flex items-center gap-2 mb-4">
                         <div className="w-8 h-8 rounded-xl bg-error/10 flex items-center justify-center">
@@ -219,12 +221,13 @@ function EducationContent() {
                         </div>
                         <h3 className="text-sm font-bold text-text">{t('edu.failedAnswers')}</h3>
                     </div>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
                         {([
                             { key: 'html', label: 'HTML', color: '#F06D5B' },
                             { key: 'css', label: 'CSS', color: '#7EB8F0' },
                             { key: 'js', label: 'JS', color: '#F5C87A' },
                             { key: 'php', label: 'PHP', color: '#9B8FE6' },
+                            { key: 'mysql', label: 'DB', color: '#3B82F6' },
                         ] as const).map((lang) => (
                             <motion.div
                                 key={lang.key}
