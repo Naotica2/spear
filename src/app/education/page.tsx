@@ -129,9 +129,9 @@ function EducationContent() {
                                     <div className="flex items-start gap-4">
                                         <motion.div
                                             className="shrink-0"
-                                            whileHover={{ rotate: 5, scale: 1.05 }}
+                                            whileHover={isMobile ? {} : { rotate: 5, scale: 1.05 }}
                                         >
-                                            {MascotComponent && <MascotComponent size={56} animate={true} />}
+                                            {MascotComponent && <MascotComponent size={56} animate={!isMobile} />}
                                         </motion.div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-1">
@@ -185,7 +185,7 @@ function EducationContent() {
                             <motion.div
                                 className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
                                 style={{ background: stat.bg }}
-                                animate={{ scale: [1, 1.05, 1] }}
+                                animate={isMobile ? {} : { scale: [1, 1.05, 1] }}
                                 transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
                             >
                                 {stat.stat === 'streak' && <StreakFire size={24} days={0} />}

@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { docsLanguages } from '@/data/docs-data';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot } from '@/components/illustrations/Mascots';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot } from '@/components/illustrations/Mascots';
 
 const mascotMap: Record<string, React.FC<{ size?: number; animate?: boolean; className?: string }>> = {
     html: HTMLMascot,
     css: CSSMascot,
     js: JSMascot,
     php: PHPMascot,
+    mysql: MySQLMascot,
 };
 
 interface DocsSidebarProps {

@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 interface MascotProps {
     size?: number;
@@ -684,20 +684,21 @@ export function ErrorIllustration({ size = 80 }: { size?: number }) {
 
 /* ====== Streak Fire Illustration ====== */
 export function StreakFire({ size = 60, days = 0 }: { size?: number; days: number }) {
+    const isMobile = useIsMobile();
     return (
         <motion.svg
             width={size}
             height={size}
             viewBox="0 0 80 80"
             fill="none"
-            animate={{ y: [0, -3, 0] }}
+            animate={isMobile ? undefined : { y: [0, -3, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
             {/* Outer flame */}
             <motion.path
                 d="M40 8 Q52 22 44 34 Q56 26 50 44 Q48 55 40 60 Q32 55 30 44 Q24 26 36 34 Q28 22 40 8Z"
                 fill="#F06D5B"
-                animate={{ scale: [1, 1.05, 1] }}
+                animate={isMobile ? undefined : { scale: [1, 1.05, 1] }}
                 transition={{ duration: 0.8, repeat: Infinity }}
                 style={{ originX: '40px', originY: '60px' }}
             />

@@ -7,6 +7,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { useQuestStore } from '@/store/useQuestStore';
 import { useT } from '@/store/useLanguageStore';
 import GlassCard from '@/components/ui/GlassCard';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 // ============================================================
 // SVG Icons (no emojis!)
@@ -441,6 +442,7 @@ export default function DailyQuest() {
     const t = useT();
     const [mounted, setMounted] = useState(false);
     const [questDone, setQuestDone] = useState(false);
+    const isMobile = useIsMobile();
 
     useEffect(() => { setMounted(true); }, []);
 
@@ -471,7 +473,7 @@ export default function DailyQuest() {
                 <div className="flex items-center gap-3">
                     <motion.div
                         className={`w-10 h-10 rounded-xl flex items-center justify-center ${tierInfo.themeClass}`}
-                        animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
+                        animate={isMobile ? {} : { rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
                         transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
                     >
                         {React.createElement(tierIcons[tier])}
@@ -524,12 +526,12 @@ export default function DailyQuest() {
                     <CelebrationBurst />
                     <motion.div
                         className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-success/15 text-success"
-                        initial={{ scale: 0, rotate: -20 }}
+                        initial={isMobile ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -20 }}
                         animate={{ scale: 1, rotate: 0 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 12, delay: 0.1 }}
                     >
                         <motion.div
-                            animate={{ scale: [1, 1.15, 1] }}
+                            animate={isMobile ? {} : { scale: [1, 1.15, 1] }}
                             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                         >
                             <CheckCircleIcon size={36} />
