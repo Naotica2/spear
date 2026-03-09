@@ -953,63 +953,222 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ====== HOW IT WORKS ====== */}
+      {/* ====== LEARNING PATH (ROADMAP) ====== */}
       <section className="py-24 px-4 sm:px-6 relative z-10 bg-gradient-to-b from-transparent via-white/40 to-transparent">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <SectionReveal className="text-center mb-20">
             <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-6 tracking-tight">
-              Cara <span className="text-gradient">Kerjanya</span>
+              Alur <span className="text-gradient">Pembelajaran</span>
             </h2>
             <p className="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
-              Tiga langkah sederhana untuk mulai belajar web development dan membangun portofolio pertamamu.
+              Langkah demi langkah terstruktur dari nol hingga mahir membuat website interaktif sendiri.
             </p>
           </SectionReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 relative">
-            {/* Connecting line for desktop */}
-            <div className="hidden sm:block absolute top-[60px] left-[15%] right-[15%] h-0.5 bg-slate-200">
+          <div className="relative">
+            {/* Vertical Connecting Line (Desktop & Mobile) */}
+            <div className="absolute top-[10%] bottom-[10%] left-[38px] md:left-[50%] md:-translate-x-1/2 w-1.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full z-0">
               <motion.div
-                className="h-full bg-gradient-to-r from-primary via-accent to-success"
-                initial={{ width: "0%" }}
-                whileInView={{ width: "100%" }}
+                className="w-full bg-gradient-to-b from-primary via-accent to-success rounded-full"
+                initial={{ height: "0%" }}
+                whileInView={{ height: "100%" }}
                 viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1.5, ease: "easeInOut" }}
+                transition={{ duration: 2, ease: "easeInOut" }}
               />
             </div>
 
-            {steps.map((step, i) => {
-              const initProps: any = isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 };
-              return (
-                <motion.div
-                  key={step.num}
-                  className="relative glass-strong rounded-[24px] p-8 pb-10 soft-shadow-lg text-center group transition-colors"
-                  initial={initProps}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: isMobile ? 0 : i * 0.2, type: 'spring', stiffness: 100, damping: 20 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  whileHover={isMobile ? {} : { y: -8 }}
-                >
-                  {/* Step number */}
+            <div className="space-y-16 relative z-10">
+              {[
+                {
+                  num: '01',
+                  badge: 'Basic',
+                  title: 'Kuasai Struktur',
+                  desc: 'Mulai dengan HTML & CSS. Pahami cara membuat layout dan styling fundamental website kamu.',
+                  icon: <HTMLMascot size={48} animate={false} />,
+                  color: '#F06D5B',
+                  features: ['Tag & Elemen Dasar', 'Box Model & Flexbox', 'Responsive Design'],
+                  align: 'left'
+                },
+                {
+                  num: '02',
+                  badge: 'Medium',
+                  title: 'Tambahkan Logika',
+                  desc: 'Pelajari JavaScript untuk membuat website kamu hidup, interaktif, dan merespon aksi user.',
+                  icon: <JSMascot size={48} animate={false} />,
+                  color: '#F5C87A',
+                  features: ['Manipulasi DOM', 'Event Listener', 'Logika Interaktif'],
+                  align: 'right'
+                },
+                {
+                  num: '03',
+                  badge: 'Advanced',
+                  title: 'Bangun Backend',
+                  desc: 'Pahami cara kerja server dengan PHP. Kelola database dan sistem autentikasi. ',
+                  icon: <PHPMascot size={48} animate={false} />,
+                  color: '#9B8FE6',
+                  features: ['Server-side Logic', 'Database MySQL', 'Sistem Login'],
+                  align: 'left'
+                },
+              ].map((step, i) => {
+                const isEven = i % 2 !== 0; // right aligned on desktop
+                const initProps: any = isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: isEven ? 50 : -50 };
+
+                return (
                   <motion.div
-                    className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-extrabold text-white shadow-xl z-10"
-                    style={{ background: step.color }}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    key={step.num}
+                    className={`relative flex flex-col md:flex-row items-start md:items-center w-full group ${isEven ? 'md:flex-row-reverse' : ''}`}
+                    initial={initProps}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: isMobile ? 0 : 0.2, type: 'spring', stiffness: 100, damping: 20 }}
+                    viewport={{ once: true, margin: "-50px" }}
                   >
-                    {step.num}
+                    {/* Node / Icon Container */}
+                    <div className="absolute md:relative left-0 md:left-auto top-0 md:top-auto z-10 md:w-1/2 flex justify-center md:items-center">
+                      <motion.div
+                        className="w-20 h-20 md:w-24 md:h-24 rounded-full glass-strong shadow-xl flex items-center justify-center border-4 border-white dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 z-20 relative"
+                        whileHover={{ scale: 1.1, rotate: 5 }}
+                      >
+                        {step.icon}
+                        {/* Pulse effect */}
+                        <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ backgroundColor: step.color }} />
+                      </motion.div>
+                      {/* Label Number */}
+                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md z-30" style={{ backgroundColor: step.color }}>
+                        {step.num}
+                      </div>
+                    </div>
+
+                    {/* Content Card */}
+                    <div className={`md:w-1/2 pl-24 md:pl-0 sm:pr-8 md:pr-0 ${isEven ? 'md:pr-12 lg:pr-16 md:text-right' : 'md:pl-12 lg:pl-16 md:text-left'} w-full`}>
+                      <div className="glass rounded-[24px] p-8 soft-shadow-lg w-full transition-transform md:group-hover:-translate-y-2 border border-white/40 dark:border-white/5 bg-white/40 dark:bg-slate-900/40 hover:bg-white/80 dark:hover:bg-slate-800/80 backdrop-blur-xl">
+                        <div className={`flex flex-col ${isEven ? 'md:items-end' : 'md:items-start'}`}>
+                          <div className="inline-block px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-4" style={{ backgroundColor: `${step.color}20`, color: step.color }}>
+                            {step.badge}
+                          </div>
+                          <h3 className="text-2xl font-extrabold text-text mb-3">{step.title}</h3>
+                          <p className="text-base text-text-secondary leading-relaxed mb-6">{step.desc}</p>
+
+                          <ul className={`space-y-3 flex flex-col ${isEven ? 'md:items-end' : 'md:items-start'}`}>
+                            {step.features.map((feature, idx) => (
+                              <li key={idx} className={`flex items-center gap-2.5 text-sm font-medium text-text-secondary/90 ${isEven ? 'md:flex-row-reverse' : ''}`}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={step.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                                  <path d="M5 12l5 5L20 7" />
+                                </svg>
+                                {feature}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
                   </motion.div>
-                  {/* Icon */}
-                  <motion.div
-                    className="text-4xl mb-6 mt-6 flex justify-center w-20 h-20 mx-auto items-center rounded-full glass soft-shadow bg-white/50 dark:bg-slate-800/50"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    {step.icon}
-                  </motion.div>
-                  <h3 className="text-xl font-extrabold text-text mb-3 group-hover:text-gradient transition-colors">{step.title}</h3>
-                  <p className="text-base text-text-secondary leading-relaxed">{step.desc}</p>
-                </motion.div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* ====== PROJECT SHOWCASE ====== */}
+      <section className="py-24 px-4 sm:px-6 relative z-10 w-full overflow-hidden border-t border-white/20 dark:border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 relative z-20">
+            <SectionReveal className="text-left max-w-2xl">
+              <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-4 tracking-tight">
+                Bangun <span className="text-gradient">Portofoliomu</span>
+              </h2>
+              <p className="text-lg text-text-secondary leading-relaxed">
+                Jangan cuma belajar teori. Terapkan skill barumu dengan membangun project nyata yang bisa kamu pamerkan. Semua assets dan panduan disiapkan.
+              </p>
+            </SectionReveal>
+            <motion.div
+              initial={isMobile ? { opacity: 1 } : { opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Link href={ctaHref} className="btn-shimmer inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white bg-primary hover:bg-primary-dark transition-all shadow-lg shadow-primary/30 w-full sm:w-auto">
+                Mulai Buat Project Pertama <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </Link>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-20">
+            {[
+              {
+                title: "Personal Portfolio Card",
+                tech: ["HTML", "CSS"],
+                color: "#7EB8F0",
+                img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800&h=600",
+                desc: "Kartu profil responsif dengan hover animation keren. Project wajib untuk semua pemula web dev.",
+                level: "Pemula"
+              },
+              {
+                title: "Interactive To-Do List",
+                tech: ["HTML", "CSS", "JS"],
+                color: "#F5C87A",
+                img: "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?auto=format&fit=crop&q=80&w=800&h=600",
+                desc: "Aplikasi pencatat tugas dengan fitur drag-drop, validasi input, & penyimpanan local storage browser.",
+                level: "Menengah"
+              },
+              {
+                title: "Dynamic Weather Dashboard",
+                tech: ["HTML", "CSS", "JS", "API"],
+                color: "#6DD5C4",
+                img: "https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&q=80&w=800&h=600",
+                desc: "Dashboard cuaca real-time yang menarik dan memproses JSON data langsung dari public REST API.",
+                level: "Lanjutan"
+              }
+            ].map((proj, i) => (
+              <motion.div
+                key={i}
+                className="group glass-strong rounded-[32px] overflow-hidden soft-shadow-xl cursor-default flex flex-col h-full bg-white/70 dark:bg-slate-900/70 border-2 border-white/50 dark:border-white/10 relative"
+                initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: isMobile ? 0 : i * 0.15, type: 'spring', stiffness: 100, damping: 20 }}
+                viewport={{ once: true }}
+                whileHover={isMobile ? {} : { y: -12, scale: 1.02 }}
+              >
+                {/* Image Wrap */}
+                <div className="h-56 relative overflow-hidden bg-slate-200 dark:bg-slate-800 m-2 rounded-[24px]">
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent z-10" />
+                  <img src={proj.img} alt={proj.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out" />
+
+                  {/* Floating Tech Badges */}
+                  <div className="absolute top-4 left-4 z-20 flex gap-2 flex-wrap">
+                    {proj.tech.map((t, j) => (
+                      <span key={j} className="px-2.5 py-1 text-[10px] font-extrabold text-slate-800 bg-white/90 backdrop-blur-md rounded-lg uppercase tracking-wider soft-shadow">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Level Badge */}
+                  <div className="absolute bottom-4 left-4 z-20">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20 text-[11px] font-bold">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.color }} />
+                      {proj.level}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-8 flex-1 flex flex-col relative z-20">
+                  <h3 className="text-2xl font-extrabold text-text mb-3 group-hover:text-primary transition-colors leading-tight">{proj.title}</h3>
+                  <p className="text-sm font-medium text-text-secondary leading-relaxed flex-1">{proj.desc}</p>
+                </div>
+
+                {/* Decorative Accent Line */}
+                <motion.div
+                  className="absolute bottom-0 left-0 h-1.5 w-0 group-hover:w-full transition-all duration-300 ease-out z-30"
+                  style={{ backgroundColor: proj.color }}
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Background Decor */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[120%] bg-gradient-to-b from-primary/5 via-accent/5 to-transparent -z-10 rounded-[100%] blur-3xl opacity-50 pointer-events-none" />
         </div>
       </section>
 
