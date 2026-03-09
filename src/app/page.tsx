@@ -563,6 +563,54 @@ function EmailForm() {
   );
 }
 
+// Define learning path steps outside component to prevent re-creation on render
+const learningPathSteps = [
+  {
+    num: '01',
+    badge: 'Basic',
+    title: 'Kuasai Struktur',
+    desc: 'Mulai dengan HTML. Pahami cara menyusun elemen dan tulang punggung dari sebuah website.',
+    icon: <HTMLMascot size={48} animate={false} />,
+    colorClass: 'text-orange-500',
+    bgClass: 'bg-orange-500',
+    bgLightClass: 'bg-orange-500/20',
+    features: ['Tag & Elemen', 'Semantic HTML', 'Struktur Konten']
+  },
+  {
+    num: '02',
+    badge: 'Basic',
+    title: 'Desain & Styling',
+    desc: 'Gunakan CSS untuk mempercantik tampilan. Pahami pewarnaan, tata letak, dan animasi dasar.',
+    icon: <CSSMascot size={48} animate={false} />,
+    colorClass: 'text-blue-500',
+    bgClass: 'bg-blue-500',
+    bgLightClass: 'bg-blue-500/20',
+    features: ['Box Model', 'Flexbox & Grid', 'Responsive Design']
+  },
+  {
+    num: '03',
+    badge: 'Medium',
+    title: 'Logika & Interaktivitas',
+    desc: 'Pelajari JavaScript untuk membuat website kamu hidup, interaktif, dan dapat merespon interaksi dari user.',
+    icon: <JSMascot size={48} animate={false} />,
+    colorClass: 'text-amber-500',
+    bgClass: 'bg-amber-500',
+    bgLightClass: 'bg-amber-500/20',
+    features: ['Manipulasi DOM', 'Event Listener', 'Async Logic']
+  },
+  {
+    num: '04',
+    badge: 'Advanced',
+    title: 'Sistem Backend',
+    desc: 'Pahami cara kerja server dengan PHP. Olah data dinamis, kelola database, dan terapkan autentikasi.',
+    icon: <PHPMascot size={48} animate={false} />,
+    colorClass: 'text-indigo-500',
+    bgClass: 'bg-indigo-500',
+    bgLightClass: 'bg-indigo-500/20',
+    features: ['Server-side Logic', 'Database MySQL', 'Sistem Login']
+  },
+];
+
 export default function HomePage() {
   const { isLoggedIn } = useAuthStore();
   const ctaHref = isLoggedIn ? '/education' : '/auth';
@@ -978,52 +1026,7 @@ export default function HomePage() {
             </div>
 
             <div className="space-y-16 relative z-10 w-full max-w-4xl mx-auto">
-              {[
-                {
-                  num: '01',
-                  badge: 'Basic',
-                  title: 'Kuasai Struktur',
-                  desc: 'Mulai dengan HTML. Pahami cara menyusun elemen dan tulang punggung dari sebuah website.',
-                  icon: <HTMLMascot size={48} animate={false} />,
-                  colorClass: 'text-orange-500',
-                  bgClass: 'bg-orange-500',
-                  bgLightClass: 'bg-orange-500/20',
-                  features: ['Tag & Elemen', 'Semantic HTML', 'Struktur Konten']
-                },
-                {
-                  num: '02',
-                  badge: 'Basic',
-                  title: 'Desain & Styling',
-                  desc: 'Gunakan CSS untuk mempercantik tampilan. Pahami pewarnaan, tata letak, dan animasi dasar.',
-                  icon: <CSSMascot size={48} animate={false} />,
-                  colorClass: 'text-blue-500',
-                  bgClass: 'bg-blue-500',
-                  bgLightClass: 'bg-blue-500/20',
-                  features: ['Box Model', 'Flexbox & Grid', 'Responsive Design']
-                },
-                {
-                  num: '03',
-                  badge: 'Medium',
-                  title: 'Logika & Interaktivitas',
-                  desc: 'Pelajari JavaScript untuk membuat website kamu hidup, interaktif, dan dapat merespon interaksi dari user.',
-                  icon: <JSMascot size={48} animate={false} />,
-                  colorClass: 'text-amber-500',
-                  bgClass: 'bg-amber-500',
-                  bgLightClass: 'bg-amber-500/20',
-                  features: ['Manipulasi DOM', 'Event Listener', 'Async Logic']
-                },
-                {
-                  num: '04',
-                  badge: 'Advanced',
-                  title: 'Sistem Backend',
-                  desc: 'Pahami cara kerja server dengan PHP. Olah data dinamis, kelola database, dan terapkan autentikasi.',
-                  icon: <PHPMascot size={48} animate={false} />,
-                  colorClass: 'text-indigo-500',
-                  bgClass: 'bg-indigo-500',
-                  bgLightClass: 'bg-indigo-500/20',
-                  features: ['Server-side Logic', 'Database MySQL', 'Sistem Login']
-                },
-              ].map((step, i) => {
+              {learningPathSteps.map((step, i) => {
                 const isEven = i % 2 !== 0; // right aligned on desktop
                 const initProps: any = isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: isEven ? 50 : -50 };
 
