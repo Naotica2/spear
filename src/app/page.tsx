@@ -983,42 +983,45 @@ export default function HomePage() {
                   num: '01',
                   badge: 'Basic',
                   title: 'Kuasai Struktur',
-                  desc: 'Mulai dengan HTML & CSS. Pahami cara membuat layout dan styling fundamental website kamu.',
-                  icon: (
-                    <div className="flex -space-x-3">
-                      <HTMLMascot size={40} animate={false} className="relative z-10" />
-                      <CSSMascot size={40} animate={false} className="relative z-0" />
-                    </div>
-                  ),
+                  desc: 'Mulai dengan HTML. Pahami cara menyusun elemen dan tulang punggung dari sebuah website.',
+                  icon: <HTMLMascot size={48} animate={false} />,
                   colorClass: 'text-orange-500',
                   bgClass: 'bg-orange-500',
                   bgLightClass: 'bg-orange-500/20',
-                  features: ['Tag & Elemen Dasar', 'Box Model & Flexbox', 'Responsive Design'],
-                  align: 'left'
+                  features: ['Tag & Elemen', 'Semantic HTML', 'Struktur Konten']
                 },
                 {
                   num: '02',
+                  badge: 'Basic',
+                  title: 'Desain & Styling',
+                  desc: 'Gunakan CSS untuk mempercantik tampilan. Pahami pewarnaan, tata letak, dan animasi dasar.',
+                  icon: <CSSMascot size={48} animate={false} />,
+                  colorClass: 'text-blue-500',
+                  bgClass: 'bg-blue-500',
+                  bgLightClass: 'bg-blue-500/20',
+                  features: ['Box Model', 'Flexbox & Grid', 'Responsive Design']
+                },
+                {
+                  num: '03',
                   badge: 'Medium',
-                  title: 'Tambahkan Logika',
-                  desc: 'Pelajari JavaScript untuk membuat website kamu hidup, interaktif, dan merespon aksi user.',
+                  title: 'Logika & Interaktivitas',
+                  desc: 'Pelajari JavaScript untuk membuat website kamu hidup, interaktif, dan dapat merespon interaksi dari user.',
                   icon: <JSMascot size={48} animate={false} />,
                   colorClass: 'text-amber-500',
                   bgClass: 'bg-amber-500',
                   bgLightClass: 'bg-amber-500/20',
-                  features: ['Manipulasi DOM', 'Event Listener', 'Logika Interaktif'],
-                  align: 'right'
+                  features: ['Manipulasi DOM', 'Event Listener', 'Async Logic']
                 },
                 {
-                  num: '03',
+                  num: '04',
                   badge: 'Advanced',
-                  title: 'Bangun Backend',
-                  desc: 'Pahami cara kerja server dengan PHP. Kelola database dan sistem autentikasi. ',
+                  title: 'Sistem Backend',
+                  desc: 'Pahami cara kerja server dengan PHP. Olah data dinamis, kelola database, dan terapkan autentikasi.',
                   icon: <PHPMascot size={48} animate={false} />,
                   colorClass: 'text-indigo-500',
                   bgClass: 'bg-indigo-500',
                   bgLightClass: 'bg-indigo-500/20',
-                  features: ['Server-side Logic', 'Database MySQL', 'Sistem Login'],
-                  align: 'left'
+                  features: ['Server-side Logic', 'Database MySQL', 'Sistem Login']
                 },
               ].map((step, i) => {
                 const isEven = i % 2 !== 0; // right aligned on desktop
