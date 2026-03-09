@@ -984,8 +984,15 @@ export default function HomePage() {
                   badge: 'Basic',
                   title: 'Kuasai Struktur',
                   desc: 'Mulai dengan HTML & CSS. Pahami cara membuat layout dan styling fundamental website kamu.',
-                  icon: <HTMLMascot size={48} animate={false} />,
-                  color: '#F06D5B',
+                  icon: (
+                    <div className="flex -space-x-3">
+                      <HTMLMascot size={40} animate={false} className="relative z-10" />
+                      <CSSMascot size={40} animate={false} className="relative z-0" />
+                    </div>
+                  ),
+                  colorClass: 'text-orange-500',
+                  bgClass: 'bg-orange-500',
+                  bgLightClass: 'bg-orange-500/20',
                   features: ['Tag & Elemen Dasar', 'Box Model & Flexbox', 'Responsive Design'],
                   align: 'left'
                 },
@@ -995,7 +1002,9 @@ export default function HomePage() {
                   title: 'Tambahkan Logika',
                   desc: 'Pelajari JavaScript untuk membuat website kamu hidup, interaktif, dan merespon aksi user.',
                   icon: <JSMascot size={48} animate={false} />,
-                  color: '#F5C87A',
+                  colorClass: 'text-amber-500',
+                  bgClass: 'bg-amber-500',
+                  bgLightClass: 'bg-amber-500/20',
                   features: ['Manipulasi DOM', 'Event Listener', 'Logika Interaktif'],
                   align: 'right'
                 },
@@ -1005,7 +1014,9 @@ export default function HomePage() {
                   title: 'Bangun Backend',
                   desc: 'Pahami cara kerja server dengan PHP. Kelola database dan sistem autentikasi. ',
                   icon: <PHPMascot size={48} animate={false} />,
-                  color: '#9B8FE6',
+                  colorClass: 'text-indigo-500',
+                  bgClass: 'bg-indigo-500',
+                  bgLightClass: 'bg-indigo-500/20',
                   features: ['Server-side Logic', 'Database MySQL', 'Sistem Login'],
                   align: 'left'
                 },
@@ -1030,10 +1041,10 @@ export default function HomePage() {
                       >
                         {step.icon}
                         {/* Pulse effect */}
-                        <div className="absolute inset-0 rounded-full animate-ping opacity-20" style={{ backgroundColor: step.color }} />
+                        <div className={`absolute inset-0 rounded-full animate-ping opacity-20 ${step.bgClass}`} />
                       </motion.div>
                       {/* Label Number */}
-                      <div className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md z-30" style={{ backgroundColor: step.color }}>
+                      <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md z-30 ${step.bgClass}`}>
                         {step.num}
                       </div>
                     </div>
@@ -1042,7 +1053,7 @@ export default function HomePage() {
                     <div className={`md:w-1/2 pl-24 md:pl-0 sm:pr-8 md:pr-0 ${isEven ? 'md:pr-12 lg:pr-16 md:text-right' : 'md:pl-12 lg:pl-16 md:text-left'} w-full`}>
                       <div className="glass rounded-[24px] p-8 soft-shadow-lg w-full transition-transform md:group-hover:-translate-y-2 border border-white/40 dark:border-white/5 bg-white/40 dark:bg-slate-900/40 hover:bg-white/80 dark:hover:bg-slate-800/80 backdrop-blur-xl">
                         <div className={`flex flex-col ${isEven ? 'md:items-end' : 'md:items-start'}`}>
-                          <div className="inline-block px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-4" style={{ backgroundColor: `${step.color}20`, color: step.color }}>
+                          <div className={`inline-block px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-4 ${step.bgLightClass} ${step.colorClass}`}>
                             {step.badge}
                           </div>
                           <h3 className="text-2xl font-extrabold text-text mb-3">{step.title}</h3>
@@ -1051,7 +1062,7 @@ export default function HomePage() {
                           <ul className={`space-y-3 flex flex-col ${isEven ? 'md:items-end' : 'md:items-start'}`}>
                             {step.features.map((feature, idx) => (
                               <li key={idx} className={`flex items-center gap-2.5 text-sm font-medium text-text-secondary/90 ${isEven ? 'md:flex-row-reverse' : ''}`}>
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={step.color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className={`shrink-0 ${step.colorClass}`}>
                                   <path d="M5 12l5 5L20 7" />
                                 </svg>
                                 {feature}
@@ -1070,101 +1081,86 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ====== PROJECT SHOWCASE ====== */}
+      {/* ====== GAMIFICATION FEATURES ====== */}
       <section className="py-24 px-4 sm:px-6 relative z-10 w-full overflow-hidden border-t border-white/20 dark:border-white/5">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 relative z-20">
-            <SectionReveal className="text-left max-w-2xl">
-              <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-4 tracking-tight">
-                Bangun <span className="text-gradient">Portofoliomu</span>
-              </h2>
-              <p className="text-lg text-text-secondary leading-relaxed">
-                Jangan cuma belajar teori. Terapkan skill barumu dengan membangun project nyata yang bisa kamu pamerkan. Semua assets dan panduan disiapkan.
-              </p>
-            </SectionReveal>
-            <motion.div
-              initial={isMobile ? { opacity: 1 } : { opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <Link href={ctaHref} className="btn-shimmer inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-bold text-white bg-primary hover:bg-primary-dark transition-all shadow-lg shadow-primary/30 w-full sm:w-auto">
-                Mulai Buat Project Pertama <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-              </Link>
-            </motion.div>
-          </div>
+          <SectionReveal className="text-center mb-20">
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-6 tracking-tight">
+              Belajar Lebih <span className="text-gradient">Seru</span>
+            </h2>
+            <p className="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
+              Tinggalkan cara belajar yang membosankan. Dapatkan pengalaman interaktif dengan sistem gamifikasi yang membuatmu makin ketagihan coding.
+            </p>
+          </SectionReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-20">
             {[
               {
-                title: "Personal Portfolio Card",
-                tech: ["HTML", "CSS"],
-                color: "#7EB8F0",
-                img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=800&h=600",
-                desc: "Kartu profil responsif dengan hover animation keren. Project wajib untuk semua pemula web dev.",
-                level: "Pemula"
+                title: "Pet Companion",
+                desc: "Pilih dan besarkan peliharaan digitalmu yang akan berevolusi seiring dengan progres belajarmu. Makin rajin coding, makin keren pet kamu!",
+                icon: (
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-primary">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                    <line x1="12" x2="12" y1="19" y2="22" />
+                  </svg>
+                ),
+                color: "from-primary/20 to-primary/5",
+                borderColor: "border-primary/20 hover:border-primary/50 text-primary"
               },
               {
-                title: "Interactive To-Do List",
-                tech: ["HTML", "CSS", "JS"],
-                color: "#F5C87A",
-                img: "https://images.unsplash.com/photo-1540350394557-8d14678e7f91?auto=format&fit=crop&q=80&w=800&h=600",
-                desc: "Aplikasi pencatat tugas dengan fitur drag-drop, validasi input, & penyimpanan local storage browser.",
-                level: "Menengah"
+                title: "Daily Quest & XP",
+                desc: "Selesaikan tantangan harian untuk mengumpulkan XP dan naik level. Buktikan dedikasimu dengan menjaga streak harianmu tidak terputus.",
+                icon: (
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-warning">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                ),
+                color: "from-warning/20 to-warning/5",
+                borderColor: "border-warning/20 hover:border-warning/50 text-warning"
               },
               {
-                title: "Dynamic Weather Dashboard",
-                tech: ["HTML", "CSS", "JS", "API"],
-                color: "#6DD5C4",
-                img: "https://images.unsplash.com/photo-1592210454359-9043f067919b?auto=format&fit=crop&q=80&w=800&h=600",
-                desc: "Dashboard cuaca real-time yang menarik dan memproses JSON data langsung dari public REST API.",
-                level: "Lanjutan"
+                title: "Leaderboard & Rank",
+                desc: "Bersaing dengan ribuan developer lainnya. Tunjukkan skillmu, raih rank tertinggi, dan jadilah yang terbaik di Hall of Fame The Alchemist.",
+                icon: (
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-success">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                    <path d="M4 22h16" />
+                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+                  </svg>
+                ),
+                color: "from-success/20 to-success/5",
+                borderColor: "border-success/20 hover:border-success/50 text-success"
               }
-            ].map((proj, i) => (
+            ].map((feature, i) => (
               <motion.div
                 key={i}
-                className="group glass-strong rounded-[32px] overflow-hidden soft-shadow-xl cursor-default flex flex-col h-full bg-white/70 dark:bg-slate-900/70 border-2 border-white/50 dark:border-white/10 relative"
+                className={`group glass-strong rounded-[32px] p-8 soft-shadow-xl flex flex-col items-center text-center bg-white/60 dark:bg-slate-900/60 border-2 transition-all duration-300 ${feature.borderColor}`}
                 initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: isMobile ? 0 : i * 0.15, type: 'spring', stiffness: 100, damping: 20 }}
                 viewport={{ once: true }}
-                whileHover={isMobile ? {} : { y: -12, scale: 1.02 }}
+                whileHover={isMobile ? {} : { y: -8, scale: 1.02 }}
               >
-                {/* Image Wrap */}
-                <div className="h-56 relative overflow-hidden bg-slate-200 dark:bg-slate-800 m-2 rounded-[24px]">
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent z-10" />
-                  <img src={proj.img} alt={proj.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out" />
-
-                  {/* Floating Tech Badges */}
-                  <div className="absolute top-4 left-4 z-20 flex gap-2 flex-wrap">
-                    {proj.tech.map((t, j) => (
-                      <span key={j} className="px-2.5 py-1 text-[10px] font-extrabold text-slate-800 bg-white/90 backdrop-blur-md rounded-lg uppercase tracking-wider soft-shadow">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Level Badge */}
-                  <div className="absolute bottom-4 left-4 z-20">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/20 text-[11px] font-bold">
-                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: proj.color }} />
-                      {proj.level}
-                    </span>
-                  </div>
+                <div className={`w-20 h-20 rounded-2xl mb-6 flex items-center justify-center bg-gradient-to-br ${feature.color} border border-white/40 dark:border-white/10 group-hover:scale-110 transition-transform duration-300`}>
+                  {feature.icon}
                 </div>
-
-                {/* Content */}
-                <div className="p-8 flex-1 flex flex-col relative z-20">
-                  <h3 className="text-2xl font-extrabold text-text mb-3 group-hover:text-primary transition-colors leading-tight">{proj.title}</h3>
-                  <p className="text-sm font-medium text-text-secondary leading-relaxed flex-1">{proj.desc}</p>
-                </div>
-
-                {/* Decorative Accent Line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 h-1.5 w-0 group-hover:w-full transition-all duration-300 ease-out z-30"
-                  style={{ backgroundColor: proj.color }}
-                />
+                <h3 className="text-xl font-extrabold text-text mb-3">{feature.title}</h3>
+                <p className="text-sm font-medium text-text-secondary leading-relaxed">{feature.desc}</p>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-16 text-center relative z-20">
+            <Link href="/playground" className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-text bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border-2 border-slate-200 dark:border-slate-700 soft-shadow-lg transition-all hover:-translate-y-1">
+              Coba Fitur Sekarang
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
 
           {/* Background Decor */}
