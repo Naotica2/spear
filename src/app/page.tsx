@@ -967,7 +967,7 @@ export default function HomePage() {
 
           <div className="relative">
             {/* Vertical Connecting Line (Desktop & Mobile) */}
-            <div className="absolute top-[10%] bottom-[10%] left-[38px] md:left-[50%] md:-translate-x-1/2 w-1.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full z-0">
+            <div className="absolute top-[10%] bottom-[10%] left-[38px] md:left-1/2 md:-translate-x-1/2 w-1.5 bg-slate-200/50 dark:bg-slate-700/50 rounded-full z-0">
               <motion.div
                 className="w-full bg-gradient-to-b from-primary via-accent to-success rounded-full"
                 initial={{ height: "0%" }}
@@ -977,7 +977,7 @@ export default function HomePage() {
               />
             </div>
 
-            <div className="space-y-16 relative z-10">
+            <div className="space-y-16 relative z-10 w-full max-w-4xl mx-auto">
               {[
                 {
                   num: '01',
@@ -1037,7 +1037,7 @@ export default function HomePage() {
                     viewport={{ once: true, margin: "-50px" }}
                   >
                     {/* Node / Icon Container */}
-                    <div className="absolute md:relative left-0 md:left-auto top-0 md:top-auto z-10 md:w-1/2 flex justify-center md:items-center">
+                    <div className={`absolute md:absolute left-0 top-0 z-10 flex justify-center md:items-center ${isEven ? 'md:left-1/2 md:-translate-x-1/2' : 'md:left-1/2 md:-translate-x-1/2'}`}>
                       <motion.div
                         className="w-20 h-20 md:w-24 md:h-24 rounded-full glass-strong shadow-xl flex items-center justify-center border-4 border-white dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 z-20 relative"
                         whileHover={{ scale: 1.1, rotate: 5 }}
@@ -1053,7 +1053,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Content Card */}
-                    <div className={`md:w-1/2 pl-24 md:pl-0 sm:pr-8 md:pr-0 ${isEven ? 'md:pr-12 lg:pr-16 md:text-right' : 'md:pl-12 lg:pl-16 md:text-left'} w-full`}>
+                    <div className={`w-full md:w-[calc(50%-3rem)] pl-24 md:pl-0 sm:pr-8 md:pr-0 ${isEven ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'}`}>
                       <div className="glass rounded-[24px] p-8 soft-shadow-lg w-full transition-transform md:group-hover:-translate-y-2 border border-white/40 dark:border-white/5 bg-white/40 dark:bg-slate-900/40 hover:bg-white/80 dark:hover:bg-slate-800/80 backdrop-blur-xl">
                         <div className={`flex flex-col ${isEven ? 'md:items-end' : 'md:items-start'}`}>
                           <div className={`inline-block px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-4 ${step.bgLightClass} ${step.colorClass}`}>
