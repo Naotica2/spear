@@ -12,6 +12,7 @@ import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot, StreakFire } f
 import AuthGuard from '@/components/auth/AuthGuard';
 import { useT } from '@/store/useLanguageStore';
 import DailyQuest from '@/components/quest/DailyQuest';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const langColors: Record<string, string> = {
     html: '#F06D5B',
@@ -33,13 +34,14 @@ function EducationContent() {
     const { userName, streak, progress, failedAnswers } = useAppStore();
     const { user, logout } = useAuthStore();
     const t = useT();
+    const isMobile = useIsMobile();
 
     return (
         <div className="space-y-8">
             {/* Top Bar */}
             <motion.div
                 className="flex items-center justify-between"
-                initial={{ opacity: 0, y: -10 }}
+                initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             >
@@ -67,7 +69,7 @@ function EducationContent() {
             {/* Hero */}
             <motion.div
                 className="text-center lg:text-left"
-                initial={{ opacity: 0, y: -20 }}
+                initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             >
@@ -81,9 +83,9 @@ function EducationContent() {
                 {streak > 0 && (
                     <motion.div
                         className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-warning/15 rounded-full"
-                        initial={{ scale: 0 }}
+                        initial={isMobile ? { scale: 1 } : { scale: 0 }}
                         animate={{ scale: 1 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 15, delay: 0.3 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 15, delay: isMobile ? 0 : 0.3 }}
                     >
                         <StreakFire size={28} days={streak} />
                         <span className="text-sm font-semibold text-text">{streak} {t('edu.dayStreak')}</span>
@@ -228,20 +230,23 @@ function EducationContent() {
                             { key: 'js', label: 'JS', color: '#F5C87A' },
                             { key: 'php', label: 'PHP', color: '#9B8FE6' },
                             { key: 'mysql', label: 'DB', color: '#3B82F6' },
-                        ] as const).map((lang) => (
-                            <motion.div
-                                key={lang.key}
-                                className="text-center p-2 rounded-xl bg-white/30 dark:bg-slate-800/50"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                            >
-                                <div className="text-lg font-bold" style={{ color: lang.color }}>
-                                    {failedAnswers[lang.key] || 0}
-                                </div>
-                                <div className="text-[10px] font-semibold text-text-secondary">{lang.label}</div>
-                            </motion.div>
-                        ))}
+                        ] as const).map((lang) => {
+                            const initProps: any = isMobile ? { scale: 1 } : { scale: 0 };
+                            return (
+                                <motion.div
+                                    key={lang.key}
+                                    className="text-center p-2 rounded-xl bg-white/30 dark:bg-slate-800/50"
+                                    initial={initProps}
+                                    animate={{ scale: 1 }}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                                >
+                                    <div className="text-lg font-bold" style={{ color: lang.color }}>
+                                        {failedAnswers[lang.key] || 0}
+                                    </div>
+                                    <div className="text-[10px] font-semibold text-text-secondary">{lang.label}</div>
+                                </motion.div>
+                            );
+                        })}
                     </div>
                 </GlassCard>
             )}

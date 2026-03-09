@@ -9,6 +9,7 @@ import Footer from '@/components/layout/Footer';
 import ScrollProgress from '@/components/ui/ScrollProgress';
 import ParticleField from '@/components/ui/ParticleField';
 import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, StreakFire, BadgeIcon, SuccessIllustration } from '@/components/illustrations/Mascots';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 const CodeEditor = dynamic(() => import('@/components/playground/CodeEditor'), { ssr: false });
 const LivePreview = dynamic(() => import('@/components/playground/LivePreview'), { ssr: false });
@@ -17,13 +18,15 @@ const LivePreview = dynamic(() => import('@/components/playground/LivePreview'),
 function SectionReveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
+  const isMobile = useIsMobile();
+
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 30, filter: 'blur(3px)' }}
-      animate={isInView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
-      transition={{ duration: 0.8, delay, type: 'spring', stiffness: 80, damping: 20 }}
+      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, filter: 'blur(3px)' }}
+      animate={isInView || isMobile ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
+      transition={{ duration: 0.8, delay: isMobile ? 0 : delay, type: 'spring', stiffness: 80, damping: 20 }}
     >
       {children}
     </motion.div>
@@ -33,30 +36,33 @@ function SectionReveal({ children, className = '', delay = 0 }: { children: Reac
 /* ====== 3D Magnetic Tilt Card ====== */
 function MagneticCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
   const springX = useSpring(rotateX, { stiffness: 300, damping: 30 });
   const springY = useSpring(rotateY, { stiffness: 300, damping: 30 });
 
   const handleMouse = useCallback((e: React.MouseEvent) => {
+    if (isMobile) return;
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
     rotateX.set(y * -12);
     rotateY.set(x * 12);
-  }, [rotateX, rotateY]);
+  }, [rotateX, rotateY, isMobile]);
 
   const handleLeave = useCallback(() => {
+    if (isMobile) return;
     rotateX.set(0);
     rotateY.set(0);
-  }, [rotateX, rotateY]);
+  }, [rotateX, rotateY, isMobile]);
 
   return (
     <motion.div
       ref={ref}
       className={className}
-      style={{ rotateX: springX, rotateY: springY, transformPerspective: 800 }}
+      style={isMobile ? {} : { rotateX: springX, rotateY: springY, transformPerspective: 800 }}
       onMouseMove={handleMouse}
       onMouseLeave={handleLeave}
     >
@@ -106,15 +112,21 @@ function TypingText({ text, className = '', cursorColor = '#6DD5C4', delay = 0 }
 function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-20px' });
-  const count = useMotionValue(0);
+  const isMobile = useIsMobile();
+  const count = useMotionValue(target); // Default to target instantly for mobile
   const rounded = useTransform(count, (latest) => Math.floor(latest) + suffix);
 
   useEffect(() => {
+    if (isMobile) {
+      count.set(target);
+      return;
+    }
     if (isInView) {
+      count.set(0); // Reset for animation if desktop
       const controls = animate(count, target, { duration: 2, ease: "easeOut" });
       return controls.stop;
     }
-  }, [isInView, target, count]);
+  }, [isInView, target, count, isMobile]);
 
   return <motion.span ref={ref}>{rounded}</motion.span>;
 }
@@ -331,12 +343,13 @@ const curriculumPreview = [
 /* ====== FAQ Accordion Item ====== */
 function FAQItem({ q, a, index }: { q: string; a: string; index: number }) {
   const [open, setOpen] = useState(false);
+  const isMobile = useIsMobile();
   return (
     <motion.div
       className="glass rounded-[var(--radius-card)] overflow-hidden soft-shadow"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
+      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+      transition={{ delay: isMobile ? 0 : index * 0.05 }}
       viewport={{ once: true }}
     >
       <button
@@ -376,14 +389,15 @@ function TryItSection() {
   const [code, setCode] = useState(`<h1>Welcome to Spear</h1>
 <h2>Hello World</h2>
 <p>Edit code ini dan lihat perubahan yang instan</p>`);
+  const isMobile = useIsMobile();
 
   return (
     <section className="py-20 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
         <motion.div
           className="text-center mb-10"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl font-extrabold text-text mb-4">
@@ -396,8 +410,8 @@ function TryItSection() {
 
         <motion.div
           className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-0"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
           <div className="lg:rounded-l-2xl lg:rounded-r-none rounded-2xl overflow-hidden">
@@ -427,10 +441,10 @@ function TryItSection() {
 
         <motion.div
           className="text-center mt-6"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={isMobile ? { opacity: 1 } : { opacity: 0 }}
+          whileInView={isMobile ? { opacity: 1 } : { opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: isMobile ? 0 : 0.3 }}
         >
           <Link
             href="/playground"
@@ -552,6 +566,7 @@ function EmailForm() {
 export default function HomePage() {
   const { isLoggedIn } = useAuthStore();
   const ctaHref = isLoggedIn ? '/education' : '/auth';
+  const isMobile = useIsMobile();
 
   return (
     <div className="min-h-[100dvh] overflow-x-hidden relative">
@@ -685,21 +700,24 @@ export default function HomePage() {
               { value: 120, suffix: '+', label: 'Lessons' },
               { value: 100, suffix: '%', label: 'Free' },
               { value: 108, suffix: '', label: 'Docs Topics' },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: i * 0.1, type: 'spring' }}
-                viewport={{ once: true, margin: "-50px" }}
-                className="relative"
-              >
-                <div className="text-3xl sm:text-5xl font-extrabold text-gradient mb-2 drop-shadow-sm">
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                </div>
-                <div className="text-sm font-semibold text-text-secondary tracking-wide uppercase">{stat.label}</div>
-              </motion.div>
-            ))}
+            ].map((stat, i) => {
+              const initProps: any = isMobile ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.9 };
+              return (
+                <motion.div
+                  key={stat.label}
+                  initial={initProps}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ delay: isMobile ? 0 : i * 0.1, type: 'spring' }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  className="relative"
+                >
+                  <div className="text-3xl sm:text-5xl font-extrabold text-gradient mb-2 drop-shadow-sm">
+                    <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                  </div>
+                  <div className="text-sm font-semibold text-text-secondary tracking-wide uppercase">{stat.label}</div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -717,33 +735,36 @@ export default function HomePage() {
           </SectionReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {features.map((feature, i) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 50, rotateX: 20 }}
-                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                transition={{ delay: i * 0.15, type: 'spring', stiffness: 100, damping: 20 }}
-                viewport={{ once: true, margin: "-50px" }}
-              >
-                <MagneticCard className="h-full">
-                  <div className="animated-border rounded-[24px] h-full">
-                    <div className="glass-strong rounded-[22px] p-8 h-full transition-colors group">
-                      <div className="flex items-start gap-6">
-                        <motion.div
-                          className="shrink-0 p-3 rounded-2xl glass soft-shadow-lg group-hover:scale-110 transition-transform duration-300 bg-white/50 dark:bg-slate-800/50"
-                        >
-                          {feature.icon}
-                        </motion.div>
-                        <div>
-                          <h3 className="text-xl font-extrabold text-text mb-2 group-hover:text-gradient transition-all">{feature.title}</h3>
-                          <p className="text-base text-text-secondary leading-relaxed">{feature.desc}</p>
+            {features.map((feature, i) => {
+              const initProps: any = isMobile ? { opacity: 1, y: 0, rotateX: 0 } : { opacity: 0, y: 50, rotateX: 20 };
+              return (
+                <motion.div
+                  key={feature.title}
+                  initial={initProps}
+                  whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{ delay: isMobile ? 0 : i * 0.15, type: 'spring', stiffness: 100, damping: 20 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                >
+                  <MagneticCard className="h-full">
+                    <div className="animated-border rounded-[24px] h-full">
+                      <div className="glass-strong rounded-[22px] p-8 h-full transition-colors group">
+                        <div className="flex items-start gap-6">
+                          <motion.div
+                            className="shrink-0 p-3 rounded-2xl glass soft-shadow-lg group-hover:scale-110 transition-transform duration-300 bg-white/50 dark:bg-slate-800/50"
+                          >
+                            {feature.icon}
+                          </motion.div>
+                          <div>
+                            <h3 className="text-xl font-extrabold text-text mb-2 group-hover:text-gradient transition-all">{feature.title}</h3>
+                            <p className="text-base text-text-secondary leading-relaxed">{feature.desc}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </MagneticCard>
-              </motion.div>
-            ))}
+                  </MagneticCard>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -807,25 +828,28 @@ export default function HomePage() {
                     </svg>
                   ),
                 },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  className="flex items-start gap-5 glass rounded-[20px] p-6 soft-shadow group"
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.15, type: 'spring', stiffness: 150, damping: 20 }}
-                  viewport={{ once: true }}
-                  whileHover={{ x: 8, scale: 1.02 }}
-                >
-                  <div className="shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6" style={{ background: `${item.color}15` }}>
-                    {item.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-text mb-1 group-hover:text-gradient transition-all">{item.title}</h3>
-                    <p className="text-base text-text-secondary leading-relaxed">{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
+              ].map((item, i) => {
+                const initProps: any = isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 };
+                return (
+                  <motion.div
+                    key={item.title}
+                    className="flex items-start gap-5 glass rounded-[20px] p-6 soft-shadow group"
+                    initial={initProps}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: isMobile ? 0 : i * 0.15, type: 'spring', stiffness: 150, damping: 20 }}
+                    viewport={{ once: true }}
+                    whileHover={isMobile ? {} : { x: 8, scale: 1.02 }}
+                  >
+                    <div className="shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110 group-hover:rotate-6" style={{ background: `${item.color}15` }}>
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-text mb-1 group-hover:text-gradient transition-all">{item.title}</h3>
+                      <p className="text-base text-text-secondary leading-relaxed">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </motion.div>
 
             {/* Right: Quest Mock Preview */}
@@ -877,31 +901,34 @@ export default function HomePage() {
                 </div>
 
                 <div className="space-y-3">
-                  {['font-color', 'text-color', 'color', 'foreground-color'].map((opt, i) => (
-                    <motion.div
-                      key={opt}
-                      className={`px-5 py-3.5 rounded-xl text-sm font-medium transition-all border-2 cursor-pointer ${i === 2 ? 'bg-primary/20 text-primary-dark dark:text-primary border-primary' : 'bg-white/50 dark:bg-slate-800/50 text-text-secondary border-transparent hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white/80 dark:hover:bg-slate-700/80'}`}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 + i * 0.1, type: 'spring' }}
-                      viewport={{ once: true }}
-                      whileHover={i !== 2 ? { scale: 1.02, x: 5 } : {}}
-                      whileTap={i !== 2 ? { scale: 0.98 } : {}}
-                    >
-                      <span className="flex items-center gap-3">
-                        <span className={`w-6 h-6 rounded flex items-center justify-center text-[11px] font-bold ${i === 2 ? 'bg-primary text-white' : 'glass shadow-sm dark:bg-slate-900 ds-text-text'}`}>{String.fromCharCode(65 + i)}</span>
-                        <code className="font-mono text-[13px]">{opt}</code>
-                        {i === 2 && (
-                          <motion.svg
-                            className="ml-auto text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
-                            initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.8, type: 'spring' }}
-                          >
-                            <polyline points="20 6 9 17 4 12" />
-                          </motion.svg>
-                        )}
-                      </span>
-                    </motion.div>
-                  ))}
+                  {['font-color', 'text-color', 'color', 'foreground-color'].map((opt, i) => {
+                    const initProps: any = isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 };
+                    return (
+                      <motion.div
+                        key={opt}
+                        className={`px-5 py-3.5 rounded-xl text-sm font-medium transition-all border-2 cursor-pointer ${i === 2 ? 'bg-primary/20 text-primary-dark dark:text-primary border-primary' : 'bg-white/50 dark:bg-slate-800/50 text-text-secondary border-transparent hover:border-slate-300 dark:hover:border-slate-600 hover:bg-white/80 dark:hover:bg-slate-700/80'}`}
+                        initial={initProps}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: isMobile ? 0 : 0.4 + i * 0.1, type: 'spring' }}
+                        viewport={{ once: true }}
+                        whileHover={i !== 2 && !isMobile ? { scale: 1.02, x: 5 } : {}}
+                        whileTap={i !== 2 && !isMobile ? { scale: 0.98 } : {}}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className={`w-6 h-6 rounded flex items-center justify-center text-[11px] font-bold ${i === 2 ? 'bg-primary text-white' : 'glass shadow-sm dark:bg-slate-900 ds-text-text'}`}>{String.fromCharCode(65 + i)}</span>
+                          <code className="font-mono text-[13px]">{opt}</code>
+                          {i === 2 && (
+                            <motion.svg
+                              className="ml-auto text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"
+                              initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.8, type: 'spring' }}
+                            >
+                              <polyline points="20 6 9 17 4 12" />
+                            </motion.svg>
+                          )}
+                        </span>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </motion.div>
 
@@ -950,35 +977,38 @@ export default function HomePage() {
               />
             </div>
 
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.num}
-                className="relative glass-strong rounded-[24px] p-8 pb-10 soft-shadow-lg text-center group transition-colors"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2, type: 'spring', stiffness: 100, damping: 20 }}
-                viewport={{ once: true, margin: "-50px" }}
-                whileHover={{ y: -8 }}
-              >
-                {/* Step number */}
+            {steps.map((step, i) => {
+              const initProps: any = isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 };
+              return (
                 <motion.div
-                  className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-extrabold text-white shadow-xl z-10"
-                  style={{ background: step.color }}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  key={step.num}
+                  className="relative glass-strong rounded-[24px] p-8 pb-10 soft-shadow-lg text-center group transition-colors"
+                  initial={initProps}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: isMobile ? 0 : i * 0.2, type: 'spring', stiffness: 100, damping: 20 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  whileHover={isMobile ? {} : { y: -8 }}
                 >
-                  {step.num}
+                  {/* Step number */}
+                  <motion.div
+                    className="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 rounded-2xl flex items-center justify-center text-sm font-extrabold text-white shadow-xl z-10"
+                    style={{ background: step.color }}
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                  >
+                    {step.num}
+                  </motion.div>
+                  {/* Icon */}
+                  <motion.div
+                    className="text-4xl mb-6 mt-6 flex justify-center w-20 h-20 mx-auto items-center rounded-full glass soft-shadow bg-white/50 dark:bg-slate-800/50"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    {step.icon}
+                  </motion.div>
+                  <h3 className="text-xl font-extrabold text-text mb-3 group-hover:text-gradient transition-colors">{step.title}</h3>
+                  <p className="text-base text-text-secondary leading-relaxed">{step.desc}</p>
                 </motion.div>
-                {/* Icon */}
-                <motion.div
-                  className="text-4xl mb-6 mt-6 flex justify-center w-20 h-20 mx-auto items-center rounded-full glass soft-shadow bg-white/50 dark:bg-slate-800/50"
-                  whileHover={{ scale: 1.1 }}
-                >
-                  {step.icon}
-                </motion.div>
-                <h3 className="text-xl font-extrabold text-text mb-3 group-hover:text-gradient transition-colors">{step.title}</h3>
-                <p className="text-base text-text-secondary leading-relaxed">{step.desc}</p>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -996,29 +1026,32 @@ export default function HomePage() {
           </SectionReveal>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-            {languages.map((lang, i) => (
-              <motion.div
-                key={lang.name}
-                className="glass-strong rounded-[24px] p-6 text-center soft-shadow-lg group cursor-pointer relative overflow-hidden transition-colors"
-                initial={{ opacity: 0, scale: 0.8, y: 30 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: i * 0.1, type: 'spring', stiffness: 200, damping: 20 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -8, scale: 1.03 }}
-              >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300" style={{ background: `radial-gradient(circle at center, ${lang.color}, transparent)` }} />
-
+            {languages.map((lang, i) => {
+              const initProps: any = isMobile ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.8, y: 30 };
+              return (
                 <motion.div
-                  className="flex items-center justify-center mx-auto mb-6 h-20"
-                  animate={{ y: [0, -4, 0] }}
-                  transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+                  key={lang.name}
+                  className="glass-strong rounded-[24px] p-6 text-center soft-shadow-lg group cursor-pointer relative overflow-hidden transition-colors"
+                  initial={initProps}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  transition={{ delay: isMobile ? 0 : i * 0.1, type: 'spring', stiffness: 200, damping: 20 }}
+                  viewport={{ once: true }}
+                  whileHover={isMobile ? {} : { y: -8, scale: 1.03 }}
                 >
-                  <lang.Mascot size={72} animate={false} />
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300" style={{ background: `radial-gradient(circle at center, ${lang.color}, transparent)` }} />
+
+                  <motion.div
+                    className="flex items-center justify-center mx-auto mb-6 h-20"
+                    animate={{ y: [0, -4, 0] }}
+                    transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <lang.Mascot size={72} animate={false} />
+                  </motion.div>
+                  <h3 className="text-xl font-extrabold mb-1" style={{ color: lang.color }}>{lang.name}</h3>
+                  <p className="text-sm font-medium text-text-secondary uppercase tracking-widest">{lang.desc}</p>
                 </motion.div>
-                <h3 className="text-xl font-extrabold mb-1" style={{ color: lang.color }}>{lang.name}</h3>
-                <p className="text-sm font-medium text-text-secondary uppercase tracking-widest">{lang.desc}</p>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -1041,47 +1074,49 @@ export default function HomePage() {
           </SectionReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {curriculumPreview.map((item, i) => (
-              <motion.div
-                key={item.lang}
-                className="glass-strong rounded-[24px] p-6 soft-shadow-lg group flex flex-col h-full transition-colors border-2 border-transparent hover:border-white/50"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, type: "spring", bounce: 0.4 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5 }}
-              >
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200/50">
-                  <div className="w-4 h-4 rounded-full shadow-sm" style={{ background: item.color }} />
-                  <h3 className="text-xl font-extrabold text-text">{item.lang}</h3>
-                </div>
-                <div className="space-y-3.5 flex-1">
-                  {item.topics.map((topic, j) => (
-                    <motion.div
-                      key={j}
-                      className="flex items-start gap-3 text-sm text-text-secondary/90 font-medium"
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 + (j * 0.05), duration: 0.3 }}
-                      viewport={{ once: true }}
-                    >
-                      <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" stroke={item.color}>
-                        <path d="M5 12l5 5L20 7" />
-                      </svg>
-                      <span className="leading-tight">{topic}</span>
-                    </motion.div>
-                  ))}
-                </div>
-                <Link
-                  href={`/docs/${item.lang.toLowerCase() === 'javascript' ? 'js' : item.lang.toLowerCase()}`}
-                  className="inline-flex items-center justify-center gap-2 mt-8 py-3 px-4 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors w-full"
-                  style={{ color: item.color }}
+            {curriculumPreview.map((item, i) => {
+              const initProps: any = isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 };
+              return (
+                <motion.div
+                  key={item.lang}
+                  className="glass-strong rounded-[24px] p-6 soft-shadow-lg group flex flex-col h-full transition-colors border-2 border-transparent hover:border-white/50"
+                  initial={initProps}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: isMobile ? 0 : i * 0.1, type: "spring", bounce: 0.4 }}
+                  viewport={{ once: true }}
+                  whileHover={isMobile ? {} : { y: -5 }}
                 >
-                  Lihat Docs Lengkap
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                </Link>
-              </motion.div>
-            ))}
+                  <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200/50">
+                    <div className="w-4 h-4 rounded-full shadow-sm" style={{ background: item.color }} />
+                    <h3 className="text-xl font-extrabold text-text">{item.lang}</h3>
+                  </div>
+                  <div className="space-y-3.5 flex-1">
+                    {item.topics.map((topic, j) => (
+                      <motion.div
+                        key={j}
+                        className="flex items-start gap-3 text-sm text-text-secondary/90 font-medium"
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 + (j * 0.05), duration: 0.3 }}
+                        viewport={{ once: true }}
+                      >
+                        <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" stroke={item.color}>
+                          <path d="M5 12l5 5L20 7" />
+                        </svg>
+                        <span className="leading-tight">{topic}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                  <Link
+                    href={`/docs/${item.lang.toLowerCase() === 'javascript' ? 'js' : item.lang.toLowerCase()}`}
+                    className="inline-flex items-center justify-center gap-2 mt-8 py-3 px-4 rounded-xl text-sm font-bold bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors w-full"
+                    style={{ color: item.color }}
+                  >
+                    Lihat Docs Lengkap
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
