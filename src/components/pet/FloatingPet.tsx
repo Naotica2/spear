@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePetStore } from '@/store/usePetStore';
-import { PetMascot } from '@/components/illustrations/PetCharacters';
+import { PetMascot } from '@/components/illustrations/petCharacters';
 import { sfx } from '@/lib/sfx';
 
 export default function FloatingPet() {

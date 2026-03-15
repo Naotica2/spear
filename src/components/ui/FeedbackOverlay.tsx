@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SuccessIllustration, ErrorIllustration } from '@/components/illustrations/Mascots';
+import { SuccessIllustration, ErrorIllustration } from '@/components/illustrations/mascots';
 import { sfx } from '@/lib/sfx';
 import { useEffect } from 'react';
 

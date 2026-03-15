@@ -6,7 +6,7 @@ import { Quest, getDailyQuest, getQuestTier, isSaturdayToday, QuestTier } from '
 import { useAppStore } from '@/store/useAppStore';
 import { useQuestStore } from '@/store/useQuestStore';
 import { useT } from '@/store/useLanguageStore';
-import GlassCard from '@/components/ui/GlassCard';
+import GlassCard from '@/components/ui/glassCard';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 // ============================================================

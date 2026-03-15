@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { getLanguageById } from '@/data/docs-data';
-import DocsSidebar from '@/components/docs/DocsSidebar';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot } from '@/components/illustrations/Mascots';
+import DocsSidebar from '@/components/docs/docsSidebar';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot } from '@/components/illustrations/mascots';
 
 const mascotMap: Record<string, React.FC<{ size?: number; animate?: boolean }>> = {
     html: HTMLMascot,

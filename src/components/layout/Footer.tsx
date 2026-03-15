@@ -23,7 +23,7 @@ const footerLinks = {
     ],
 };
 
-import SpearLogoIcon from '@/components/ui/SpearLogo';
+import SpearLogoIcon from '@/components/ui/spearLogo';
 
 function FooterLogo() {
     return <SpearLogoIcon size={32} gradientId="footerLogo" />;

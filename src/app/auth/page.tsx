@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/useAuthStore';
-import SpearLogo from '@/components/ui/SpearLogo';
+import SpearLogo from '@/components/ui/spearLogo';
 
 export default function AuthPage() {
     const [mode, setMode] = useState<'login' | 'register'>('login');

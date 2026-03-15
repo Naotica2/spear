@@ -6,10 +6,10 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { curriculum } from '@/data/curriculum';
 import { useAppStore, Language } from '@/store/useAppStore';
-import GlassCard from '@/components/ui/GlassCard';
-import ProgressBar from '@/components/ui/ProgressBar';
-import { LanguageMascot } from '@/components/illustrations/Mascots';
-import AuthGuard from '@/components/auth/AuthGuard';
+import GlassCard from '@/components/ui/glassCard';
+import ProgressBar from '@/components/ui/progressBar';
+import { LanguageMascot } from '@/components/illustrations/mascots';
+import AuthGuard from '@/components/auth/authGuard';
 
 const langColors: Record<string, string> = {
     html: '#F06D5B',

@@ -5,10 +5,10 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import SpearLogo from '@/components/ui/SpearLogo';
+import SpearLogo from '@/components/ui/spearLogo';
 
-const CodeEditor = dynamic(() => import('@/components/playground/CodeEditor'), { ssr: false });
-const LivePreview = dynamic(() => import('@/components/playground/LivePreview'), { ssr: false });
+const CodeEditor = dynamic(() => import('@/components/playground/codeEditor'), { ssr: false });
+const LivePreview = dynamic(() => import('@/components/playground/livePreview'), { ssr: false });
 
 const presets: Record<string, { html: string; css: string; js: string }> = {
     html: {

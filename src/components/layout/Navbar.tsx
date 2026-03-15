@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/useAuthStore';
-import SpearLogo from '@/components/ui/SpearLogo';
+import SpearLogo from '@/components/ui/spearLogo';
 import { useT } from '@/store/useLanguageStore';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { ThemeToggle } from '@/components/ui/themeToggle';
 
 export default function Navbar() {
     const pathname = usePathname();

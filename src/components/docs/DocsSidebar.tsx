@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { docsLanguages } from '@/data/docs-data';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot } from '@/components/illustrations/Mascots';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot } from '@/components/illustrations/mascots';
 
 const mascotMap: Record<string, React.FC<{ size?: number; animate?: boolean; className?: string }>> = {
     html: HTMLMascot,

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { getLanguageById, getTopicById } from '@/data/docs-data';
-import DocsSidebar from '@/components/docs/DocsSidebar';
+import DocsSidebar from '@/components/docs/docsSidebar';
 
 /**
  * Prettify CSS: expand single-line rules into multi-line with indentation.

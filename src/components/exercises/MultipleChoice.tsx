@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import MagneticButton from '../ui/MagneticButton';
+import MagneticButton from '../ui/magneticButton';
 
 interface MultipleChoiceProps {
     question: string;

@@ -3,10 +3,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Slide } from '@/data/types';
-import MultipleChoice from '@/components/exercises/MultipleChoice';
-import FillInBlank from '@/components/exercises/FillInBlank';
-import DragAndDrop from '@/components/exercises/DragAndDrop';
-import CompanionCharacter, { CompanionExpression } from '@/components/illustrations/CompanionCharacter';
+import MultipleChoice from '@/components/exercises/multipleChoice';
+import FillInBlank from '@/components/exercises/fillInBlank';
+import DragAndDrop from '@/components/exercises/dragAndDrop';
+import CompanionCharacter, { CompanionExpression } from '@/components/illustrations/companionCharacter';
 import { BookOpen, HelpCircle, PenTool, MoveVertical } from 'lucide-react';
 
 export default function SlideRenderer({

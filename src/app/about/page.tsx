@@ -3,8 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import GlassCard from '@/components/ui/GlassCard';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, HeroIllustration } from '@/components/illustrations/Mascots';
+import GlassCard from '@/components/ui/glassCard';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, HeroIllustration } from '@/components/illustrations/mascots';
 
 /* ===== Reusable animated section wrapper ===== */
 function Section({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {

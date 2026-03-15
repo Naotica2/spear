@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useAppStore, Language } from '@/store/useAppStore';
 import { useAuthStore } from '@/store/useAuthStore';
-import GlassCard from '@/components/ui/GlassCard';
-import { LanguageMascot, StreakFire, BadgeIcon } from '@/components/illustrations/Mascots';
+import GlassCard from '@/components/ui/glassCard';
+import { LanguageMascot, StreakFire, BadgeIcon } from '@/components/illustrations/mascots';
 import { getSupabase } from '@/lib/supabase';
 
 const langMeta: Record<string, { name: string; color: string }> = {

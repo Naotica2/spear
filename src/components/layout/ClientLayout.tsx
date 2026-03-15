@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import AnimatedBackground from '@/components/ui/AnimatedBackground';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import PageTransition from '@/components/layout/PageTransition';
-import FloatingPet from '@/components/pet/FloatingPet';
+import AnimatedBackground from '@/components/ui/animatedBackground';
+import Navbar from '@/components/layout/navbar';
+import Footer from '@/components/layout/footer';
+import PageTransition from '@/components/layout/pageTransition';
+import FloatingPet from '@/components/pet/floatingPet';
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();

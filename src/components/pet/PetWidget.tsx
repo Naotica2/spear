@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePetStore, PET_XP_THRESHOLDS } from '@/store/usePetStore';
-import { PetMascot } from '@/components/illustrations/PetCharacters';
-import GlassCard from '@/components/ui/GlassCard';
-import ProgressBar from '@/components/ui/ProgressBar';
+import { PetMascot } from '@/components/illustrations/petCharacters';
+import GlassCard from '@/components/ui/glassCard';
+import ProgressBar from '@/components/ui/progressBar';
 import { sfx } from '@/lib/sfx';
 
 export default function PetWidget() {

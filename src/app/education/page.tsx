@@ -3,15 +3,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import GlassCard from '@/components/ui/GlassCard';
-import ProgressBar from '@/components/ui/ProgressBar';
+import GlassCard from '@/components/ui/glassCard';
+import ProgressBar from '@/components/ui/progressBar';
 import { useAppStore } from '@/store/useAppStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { curriculum } from '@/data/curriculum';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot, StreakFire } from '@/components/illustrations/Mascots';
-import AuthGuard from '@/components/auth/AuthGuard';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, MySQLMascot, StreakFire } from '@/components/illustrations/mascots';
+import AuthGuard from '@/components/auth/authGuard';
 import { useT } from '@/store/useLanguageStore';
-import DailyQuest from '@/components/quest/DailyQuest';
+import DailyQuest from '@/components/quest/dailyQuest';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 const langColors: Record<string, string> = {

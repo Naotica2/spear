@@ -5,9 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, useRouter } from 'next/navigation';
 import { curriculum, Slide } from '@/data/curriculum';
 import { useAppStore, Language } from '@/store/useAppStore';
-import FeedbackOverlay from '@/components/ui/FeedbackOverlay';
-import AuthGuard from '@/components/auth/AuthGuard';
-import { CompanionExpression } from '@/components/illustrations/CompanionCharacter';
+import FeedbackOverlay from '@/components/ui/feedbackOverlay';
+import AuthGuard from '@/components/auth/authGuard';
+import { CompanionExpression } from '@/components/illustrations/companionCharacter';
 import { useSFXStore } from '@/store/useSFXStore';
 import { sfx } from '@/lib/sfx';
 import { Volume2, VolumeX, X } from 'lucide-react';
@@ -188,7 +188,7 @@ function LessonContent() {
     );
 }
 
-import SlideRenderer from '@/components/exercises/SlideRenderer';
+import SlideRenderer from '@/components/exercises/slideRenderer';
 
 function SlideContent({
     slide,

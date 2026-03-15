@@ -3,10 +3,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import SpearLogo from '@/components/ui/SpearLogo';
+import SpearLogo from '@/components/ui/spearLogo';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/useAuthStore';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { ThemeToggle } from '@/components/ui/themeToggle';
 
 /* ===== SVG Nav Icons ===== */
 function HomeIcon({ active }: { active: boolean }) {

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useMemo, useState, useEffect } from 'react';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 interface Particle {
     id: number;
@@ -45,10 +46,16 @@ const SHAPES = [
 /* ====== Enhanced Particle Field ====== */
 export default function ParticleField({ count = 25 }: { count?: number }) {
     const [mounted, setMounted] = useState(false);
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    // Skip rendering particles entirely on mobile for performance
+    if (isMobile) {
+        return <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true" />;
+    }
 
     const particles: Particle[] = useMemo(() => {
         if (!mounted) return [];

@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePetStore, PetType } from '@/store/usePetStore';
 import { sfx } from '@/lib/sfx';
-import AuthGuard from '@/components/auth/AuthGuard';
-import GlassCard from '@/components/ui/GlassCard';
-import { PetMascot, PetExpression } from '@/components/illustrations/PetCharacters';
+import AuthGuard from '@/components/auth/authGuard';
+import GlassCard from '@/components/ui/glassCard';
+import { PetMascot, PetExpression } from '@/components/illustrations/petCharacters';
 import { Sparkles, Moon, Sun } from 'lucide-react';
-import PetSelection from '@/components/pet/PetSelection';
+import PetSelection from '@/components/pet/petSelection';
 
 const ACCESSORY_LIST = [
     {

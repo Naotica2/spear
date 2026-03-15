@@ -5,14 +5,14 @@ import { motion, useInView, AnimatePresence, useScroll, useTransform, useSpring,
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useAuthStore } from '@/store/useAuthStore';
-import Footer from '@/components/layout/Footer';
-import ScrollProgress from '@/components/ui/ScrollProgress';
-import ParticleField from '@/components/ui/ParticleField';
-import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, StreakFire, BadgeIcon, SuccessIllustration } from '@/components/illustrations/Mascots';
+import Footer from '@/components/layout/footer';
+import ScrollProgress from '@/components/ui/scrollProgress';
+import ParticleField from '@/components/ui/particleField';
+import { HTMLMascot, CSSMascot, JSMascot, PHPMascot, StreakFire, BadgeIcon, SuccessIllustration } from '@/components/illustrations/mascots';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-const CodeEditor = dynamic(() => import('@/components/playground/CodeEditor'), { ssr: false });
-const LivePreview = dynamic(() => import('@/components/playground/LivePreview'), { ssr: false });
+const CodeEditor = dynamic(() => import('@/components/playground/codeEditor'), { ssr: false });
+const LivePreview = dynamic(() => import('@/components/playground/livePreview'), { ssr: false });
 
 /* ====== Reusable Scroll-Triggered Reveal ====== */
 function SectionReveal({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -76,8 +76,14 @@ function TypingText({ text, className = '', cursorColor = '#6DD5C4', delay = 0 }
   const [displayedText, setDisplayedText] = useState('');
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    // On mobile, show text instantly to avoid animation overhead
+    if (isMobile) {
+      setDisplayedText(text);
+      return;
+    }
     if (!isInView) return;
 
     let i = 0;
@@ -93,17 +99,19 @@ function TypingText({ text, className = '', cursorColor = '#6DD5C4', delay = 0 }
     }, delay * 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [isInView, text, delay]);
+  }, [isInView, text, delay, isMobile]);
 
   return (
     <span ref={ref} className={`inline-block ${className}`}>
       {displayedText}
-      <motion.span
-        className="inline-block w-[3px] h-[0.9em] align-middle ml-1 rounded-sm"
-        style={{ backgroundColor: cursorColor }}
-        animate={{ opacity: [1, 0] }}
-        transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
-      />
+      {!isMobile && (
+        <motion.span
+          className="inline-block w-[3px] h-[0.9em] align-middle ml-1 rounded-sm"
+          style={{ backgroundColor: cursorColor }}
+          animate={{ opacity: [1, 0] }}
+          transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
+        />
+      )}
     </span>
   );
 }
@@ -401,7 +409,7 @@ function TryItSection() {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl font-extrabold text-text mb-4">
-            Langsung <span className="text-gradient">Coba</span>
+            Just try <span className="text-gradient">Here</span>
           </h2>
           <p className="text-text-secondary max-w-lg mx-auto">
             Tidak perlu install apa-apa. Tulis kode langsung di sini dan lihat hasilnya real-time.
@@ -775,7 +783,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <SectionReveal className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-6 tracking-tight">
-              Kenapa <span className="text-gradient">Spear</span>?
+              Why choose <span className="text-gradient">Spear</span>?
             </h2>
             <p className="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
               Platform yang dirancang untuk membuat belajar coding menjadi <strong className="text-text">menyenangkan</strong> dan <strong className="text-text">efektif</strong>.
@@ -910,16 +918,16 @@ export default function HomePage() {
             >
               <motion.div
                 className="glass-strong rounded-[24px] p-8 soft-shadow-xl relative overflow-hidden"
-                animate={{ y: [-8, 8, -8] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                animate={isMobile ? {} : { y: [-8, 8, -8] }}
+                transition={isMobile ? {} : { duration: 6, repeat: Infinity, ease: 'easeInOut' }}
               >
                 {/* Gradient accent */}
                 {/* Header */}
                 <div className="flex items-center gap-4 mb-6">
                   <motion.div
                     className="w-12 h-12 rounded-xl flex items-center justify-center bg-accent/15 text-accent dark:bg-accent/20"
-                    animate={{ rotate: [0, 8, -8, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                    animate={isMobile ? {} : { rotate: [0, 8, -8, 0] }}
+                    transition={isMobile ? {} : { duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                   >
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" />
@@ -931,8 +939,8 @@ export default function HomePage() {
                   </div>
                   <motion.div
                     className="ml-auto px-3 py-1.5 bg-warning/15 text-warning rounded-full text-xs font-bold inline-flex items-center gap-1.5"
-                    animate={{ scale: [1, 1.05, 1], boxShadow: ["0 0 0 rgba(245,200,122,0)", "0 0 10px rgba(245,200,122,0.5)", "0 0 0 rgba(245,200,122,0)"] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    animate={isMobile ? {} : { scale: [1, 1.05, 1], boxShadow: ["0 0 0 rgba(245,200,122,0)", "0 0 10px rgba(245,200,122,0.5)", "0 0 0 rgba(245,200,122,0)"] }}
+                    transition={isMobile ? {} : { duration: 2, repeat: Infinity }}
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                       <path d="M6 2h12v6a6 6 0 01-12 0V2z" fill="currentColor" opacity="0.9" />
@@ -982,9 +990,9 @@ export default function HomePage() {
 
               {/* Floating XP badge */}
               <motion.div
-                className="absolute -right-4 -top-6 glass rounded-2xl px-4 py-3 flex items-center gap-3 soft-shadow-lg z-10"
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                className={`absolute -right-4 -top-6 glass rounded-2xl px-4 py-3 flex items-center gap-3 soft-shadow-lg z-10 ${isMobile ? 'hidden' : ''}`}
+                animate={isMobile ? {} : { y: [0, -10, 0] }}
+                transition={isMobile ? {} : { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
               >
                 <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-warning/15 text-warning dark:bg-warning/20">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -1006,7 +1014,7 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto">
           <SectionReveal className="text-center mb-20">
             <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-6 tracking-tight">
-              Alur <span className="text-gradient">Pembelajaran</span>
+              Learning <span className="text-gradient">Flow</span>
             </h2>
             <p className="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
               Langkah demi langkah terstruktur dari nol hingga mahir membuat website interaktif sendiri.
@@ -1047,7 +1055,7 @@ export default function HomePage() {
                       >
                         {step.icon}
                         {/* Pulse effect */}
-                        <div className={`absolute inset-0 rounded-full animate-ping opacity-20 ${step.bgClass}`} />
+                        {!isMobile && <div className={`absolute inset-0 rounded-full animate-ping opacity-20 ${step.bgClass}`} />}
                       </motion.div>
                       {/* Label Number */}
                       <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md z-30 ${step.bgClass}`}>
@@ -1092,7 +1100,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <SectionReveal className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-6 tracking-tight">
-              Bahasa yang Akan Kamu <span className="text-gradient">Kuasai</span>
+              The Language you will <span className="text-gradient">Master</span>
             </h2>
             <p className="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
               Dari struktur halaman sampai server-side programming, kuasai stack dasar web development selangkah demi selangkah.
@@ -1116,8 +1124,8 @@ export default function HomePage() {
 
                   <motion.div
                     className="flex items-center justify-center mx-auto mb-6 h-20"
-                    animate={{ y: [0, -4, 0] }}
-                    transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+                    animate={isMobile ? {} : { y: [0, -4, 0] }}
+                    transition={isMobile ? {} : { duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
                   >
                     <lang.Mascot size={72} animate={false} />
                   </motion.div>
@@ -1169,9 +1177,9 @@ export default function HomePage() {
                       <motion.div
                         key={j}
                         className="flex items-start gap-3 text-sm text-text-secondary/90 font-medium"
-                        initial={{ opacity: 0, x: -10 }}
+                        initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 + (j * 0.05), duration: 0.3 }}
+                        transition={isMobile ? { duration: 0 } : { delay: 0.2 + (j * 0.05), duration: 0.3 }}
                         viewport={{ once: true }}
                       >
                         <svg className="shrink-0 mt-0.5" width="16" height="16" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" stroke={item.color}>
@@ -1200,7 +1208,7 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto">
           <SectionReveal className="text-center mb-16">
             <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-6 tracking-tight">
-              Pertanyaan <span className="text-gradient">Umum</span>
+              <span className="text-gradient">FAQs</span>
             </h2>
             <p className="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
               Masih ragu? Temukan jawaban untuk pertanyaan yang paling sering diajukan di sini.
@@ -1231,7 +1239,7 @@ export default function HomePage() {
           >
             <div className="relative z-10">
               <h2 className="text-3xl sm:text-5xl font-extrabold text-text mb-4 tracking-tight">
-                Siap untuk <span className="text-gradient">Mulai</span>?
+                Ready to <span className="text-gradient">Start</span>?
               </h2>
               <p className="text-base sm:text-lg text-text-secondary/90 mb-8 max-w-xl mx-auto leading-relaxed font-medium">
                 Bergabunglah dengan ribuan developer lainnya. Mulai perjalanan coding kamu hari ini. Gratis selamanya, tanpa batasan.
@@ -1247,8 +1255,8 @@ export default function HomePage() {
                     {isLoggedIn ? 'Buka Dashboard' : 'Daftar Sekarang — Gratis'}
                     <motion.svg
                       width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round"
-                      animate={{ x: [0, 4, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      animate={isMobile ? {} : { x: [0, 4, 0] }}
+                      transition={isMobile ? {} : { duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                     >
                       <path d="M5 12H19M13 6L19 12L13 18" />
                     </motion.svg>
@@ -1285,16 +1293,20 @@ export default function HomePage() {
           >
             {/* Background accents */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              <motion.div
-                className="absolute -top-32 -left-32 w-64 h-64 rounded-full bg-primary/10 blur-3xl"
-                animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
-                transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <motion.div
-                className="absolute -bottom-32 -right-32 w-64 h-64 rounded-full bg-accent/10 blur-3xl"
-                animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
-                transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-              />
+              {!isMobile && (
+                <>
+                  <motion.div
+                    className="absolute -top-32 -left-32 w-64 h-64 rounded-full bg-primary/10 blur-3xl"
+                    animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
+                    transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                  <motion.div
+                    className="absolute -bottom-32 -right-32 w-64 h-64 rounded-full bg-accent/10 blur-3xl"
+                    animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                  />
+                </>
+              )}
             </div>
 
             {/* Top animated gradient bar */}
@@ -1324,7 +1336,7 @@ export default function HomePage() {
               </motion.div>
 
               <h2 className="text-2xl sm:text-3xl font-extrabold text-text text-center mb-4 tracking-tight">
-                Ada Pertanyaan atau <span className="text-gradient">Saran</span>?
+                Have a <span className="text-gradient">Question</span>?
               </h2>
               <p className="text-base text-text-secondary text-center mb-10 max-w-md mx-auto leading-relaxed">
                 Hubungi kami kapan saja! Kirim pesan langsung ke tim Spear. Kami selalu senang mendengar feedback dari kamu.

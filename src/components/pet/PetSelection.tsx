@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePetStore, PetType } from '@/store/usePetStore';
-import { PetMascot } from '@/components/illustrations/PetCharacters';
-import GlassCard from '@/components/ui/GlassCard';
+import { PetMascot } from '@/components/illustrations/petCharacters';
+import GlassCard from '@/components/ui/glassCard';
 import { sfx } from '@/lib/sfx';
 
 const PET_OPTIONS: { id: PetType; name: string; desc: string; color: string }[] = [
@@ -36,14 +36,14 @@ export default function PetSelection() {
                     style={{ background: 'rgba(30, 41, 59, 0.8)', backdropFilter: 'blur(10px)' }}
                 >
                     <motion.div
-                        className="glass-strong rounded-[32px] max-w-4xl w-full p-8 md:p-12 relative overflow-hidden text-center soft-shadow-lg"
+                        className="glass-strong rounded-[32px] max-w-4xl w-full p-6 sm:p-8 md:p-12 relative overflow-hidden md:overflow-visible overflow-y-auto max-h-[95vh] flex flex-col items-center justify-start md:justify-center text-center soft-shadow-lg"
                         initial={{ scale: 0.9, y: 30 }}
                         animate={{ scale: 1, y: 0 }}
                         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
                     >
                         {/* Background decor */}
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2"></div>
-                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-x-1/2 translate-y-1/2"></div>
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
 
                         <motion.h2
                             className="text-3xl md:text-5xl font-extrabold mb-4"
