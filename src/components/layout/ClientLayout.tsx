@@ -105,8 +105,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                         {children}
                     </PageTransition>
                 </div>
-                <Footer />
             </div>
+            <Footer />
             <FloatingPet />
         </>
     );

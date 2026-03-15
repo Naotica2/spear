@@ -568,7 +568,7 @@ const learningPathSteps = [
   {
     num: '01',
     badge: 'Basic',
-    title: 'Kuasai Struktur',
+    title: 'Master The Structure',
     desc: 'Mulai dengan HTML. Pahami cara menyusun elemen dan tulang punggung dari sebuah website.',
     icon: <HTMLMascot size={48} animate={false} />,
     colorClass: 'text-orange-500',
@@ -579,7 +579,7 @@ const learningPathSteps = [
   {
     num: '02',
     badge: 'Basic',
-    title: 'Desain & Styling',
+    title: 'Design & Styling',
     desc: 'Gunakan CSS untuk mempercantik tampilan. Pahami pewarnaan, tata letak, dan animasi dasar.',
     icon: <CSSMascot size={48} animate={false} />,
     colorClass: 'text-blue-500',
@@ -590,7 +590,7 @@ const learningPathSteps = [
   {
     num: '03',
     badge: 'Medium',
-    title: 'Logika & Interaktivitas',
+    title: 'Logic & Interactivity',
     desc: 'Pelajari JavaScript untuk membuat website kamu hidup, interaktif, dan dapat merespon interaksi dari user.',
     icon: <JSMascot size={48} animate={false} />,
     colorClass: 'text-amber-500',
@@ -601,7 +601,7 @@ const learningPathSteps = [
   {
     num: '04',
     badge: 'Advanced',
-    title: 'Sistem Backend',
+    title: 'Backend System',
     desc: 'Pahami cara kerja server dengan PHP. Olah data dinamis, kelola database, dan terapkan autentikasi.',
     icon: <PHPMascot size={48} animate={false} />,
     colorClass: 'text-indigo-500',
