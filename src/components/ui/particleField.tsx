@@ -52,13 +52,8 @@ export default function ParticleField({ count = 25 }: { count?: number }) {
         setMounted(true);
     }, []);
 
-    // Skip rendering particles entirely on mobile for performance
-    if (isMobile) {
-        return <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true" />;
-    }
-
     const particles: Particle[] = useMemo(() => {
-        if (!mounted) return [];
+        if (!mounted || isMobile) return [];
         return Array.from({ length: count }, (_, i) => ({
             id: i,
             x: Math.random() * 100,
@@ -70,9 +65,10 @@ export default function ParticleField({ count = 25 }: { count?: number }) {
             shapeIndex: Math.floor(Math.random() * SHAPES.length),
             rotation: Math.random() * 360,
         }));
-    }, [count, mounted]);
+    }, [count, mounted, isMobile]);
 
-    if (!mounted) {
+    // Skip rendering particles entirely on mobile for performance
+    if (isMobile || !mounted) {
         return <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true" />;
     }
 

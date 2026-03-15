@@ -24,7 +24,7 @@ function SectionReveal({ children, className = '', delay = 0 }: { children: Reac
     <motion.div
       ref={ref}
       className={className}
-      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, filter: 'blur(3px)' }}
+      initial={isMobile === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 30, filter: 'blur(3px)' }}
       animate={isInView || isMobile ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
       transition={{ duration: 0.8, delay: isMobile ? 0 : delay, type: 'spring', stiffness: 80, damping: 20 }}
     >
@@ -125,7 +125,7 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
   const rounded = useTransform(count, (latest) => Math.floor(latest) + suffix);
 
   useEffect(() => {
-    if (isMobile) {
+    if (isMobile === true) {
       count.set(target);
       return;
     }
@@ -355,9 +355,9 @@ function FAQItem({ q, a, index }: { q: string; a: string; index: number }) {
   return (
     <motion.div
       className="glass rounded-[var(--radius-card)] overflow-hidden soft-shadow"
-      initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      whileInView={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
-      transition={{ delay: isMobile ? 0 : index * 0.05 }}
+      initial={isMobile === true ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      whileInView={isMobile === true ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
+      transition={{ delay: isMobile === true ? 0 : index * 0.05 }}
       viewport={{ once: true }}
     >
       <button
@@ -757,13 +757,13 @@ export default function HomePage() {
               { value: 100, suffix: '%', label: 'Free' },
               { value: 108, suffix: '', label: 'Docs Topics' },
             ].map((stat, i) => {
-              const initProps: any = isMobile ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.9 };
+              const initProps = isMobile === true ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 20, scale: 0.9 };
               return (
                 <motion.div
                   key={stat.label}
                   initial={initProps}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: isMobile ? 0 : i * 0.1, type: 'spring' }}
+                  transition={{ delay: isMobile === true ? 0 : i * 0.1, type: 'spring' }}
                   viewport={{ once: true, margin: "-50px" }}
                   className="relative"
                 >
