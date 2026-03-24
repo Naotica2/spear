@@ -41,6 +41,10 @@ export interface AppState {
   getLanguageProgress: (lang: Language) => number;
   trackFailedAnswer: (lang: Language) => void;
   clearStore: () => void;
+  // Admin actions
+  adminCompleteNextLevel: (lang: Language) => void;
+  adminCompleteLanguage: (lang: Language) => void;
+  adminResetAll: () => void;
 }
 
 const defaultProgress: Record<Language, LanguageProgress> = {
@@ -224,6 +228,94 @@ export const useAppStore = create<AppState>()(
             [lang]: (state.failedAnswers[lang] || 0) + 1,
           },
         }));
+      },
+
+      adminCompleteNextLevel: (lang: Language) => {
+        const langCurriculum = curriculum[lang];
+        if (!langCurriculum) return;
+        const state = get();
+        const completed = state.progress[lang]?.completedLevels || {};
+        // Find the first uncompleted level
+        const nextLevel = langCurriculum.levels.find(level => !completed[level.id]);
+        if (!nextLevel) return; // All levels already completed
+        // Use the regular completeLevel to trigger badges, streak, pet XP etc.
+        get().completeLevel(lang, nextLevel.id, 100);
+      },
+
+      adminCompleteLanguage: (lang: Language) => {
+        const state = get();
+        const langCurriculum = curriculum[lang];
+        if (!langCurriculum) return;
+
+        // Build completedLevels with all levels at score 100
+        const completedLevels: Record<string, LevelProgress> = {};
+        langCurriculum.levels.forEach(level => {
+          completedLevels[level.id] = { completed: true, score: 100 };
+        });
+
+        const langProgress: LanguageProgress = {
+          completedLevels,
+          overallProgress: 100,
+        };
+
+        const newProgress = { ...state.progress, [lang]: langProgress };
+        set({ progress: newProgress });
+
+        // Award relevant badges
+        const badges = [...state.badges];
+
+        // First lesson badge
+        const firstLesson = badges.find(b => b.id === 'first-lesson');
+        if (firstLesson && !firstLesson.earned) {
+          firstLesson.earned = true;
+          firstLesson.earnedAt = new Date().toISOString();
+        }
+
+        // Perfect score badge
+        const perfect = badges.find(b => b.id === 'perfect-score');
+        if (perfect && !perfect.earned) {
+          perfect.earned = true;
+          perfect.earnedAt = new Date().toISOString();
+        }
+
+        // Language master badge
+        const masterBadge = badges.find(b => b.id === `${lang}-master`);
+        if (masterBadge && !masterBadge.earned) {
+          masterBadge.earned = true;
+          masterBadge.earnedAt = new Date().toISOString();
+        }
+
+        // Polyglot badge — check if all languages have progress
+        const allLangs: Language[] = ['html', 'css', 'js', 'php', 'mysql'];
+        const hasAllLangs = allLangs.every(l => {
+          const p = newProgress[l];
+          return Object.keys(p.completedLevels).length > 0;
+        });
+        if (hasAllLangs) {
+          const polyglot = badges.find(b => b.id === 'all-languages');
+          if (polyglot && !polyglot.earned) {
+            polyglot.earned = true;
+            polyglot.earnedAt = new Date().toISOString();
+          }
+        }
+
+        set({ badges });
+
+        // Update streak
+        get().updateStreak();
+      },
+
+      adminResetAll: () => {
+        set({
+          progress: {
+            html: { completedLevels: {}, overallProgress: 0 },
+            css: { completedLevels: {}, overallProgress: 0 },
+            js: { completedLevels: {}, overallProgress: 0 },
+            php: { completedLevels: {}, overallProgress: 0 },
+            mysql: { completedLevels: {}, overallProgress: 0 },
+          },
+          badges: defaultBadges.map(b => ({ ...b, earned: false, earnedAt: undefined })),
+        });
       },
     }),
     {

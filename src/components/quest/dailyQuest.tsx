@@ -8,32 +8,11 @@ import { useQuestStore } from '@/store/useQuestStore';
 import { useT } from '@/store/useLanguageStore';
 import GlassCard from '@/components/ui/glassCard';
 import { useIsMobile } from '@/hooks/useIsMobile';
+import { QuestMascot } from '@/components/illustrations/mascots';
 
 // ============================================================
 // SVG Icons (no emojis!)
 // ============================================================
-function FlameIcon() {
-    return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2C8 8 5 11 5 15a7 7 0 0014 0c0-4-3-7-7-13z" fill="currentColor" opacity="0.9" />
-            <path d="M12 9c-2 3-3 5-3 7a3 3 0 006 0c0-2-1-4-3-7z" fill="currentColor" opacity="0.5" />
-        </svg>
-    );
-}
-function StarIcon() {
-    return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" opacity="0.95" />
-        </svg>
-    );
-}
-function BoltIcon() {
-    return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M13 2L4 14h7l-2 8 9-12h-7l2-8z" fill="currentColor" opacity="0.95" />
-        </svg>
-    );
-}
 function TrophyIcon() {
     return (
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -90,16 +69,10 @@ function CelebrationBurst() {
     );
 }
 
-const tierIcons: Record<QuestTier, React.FC> = {
-    'html': FlameIcon,
-    'html+css': StarIcon,
-    'html+css+js': BoltIcon,
-};
-
-const tierLabels: Record<QuestTier, { label: string; themeClass: string }> = {
-    'html': { label: 'HTML', themeClass: 'bg-error/15 text-error dark:bg-error/20' },
-    'html+css': { label: 'HTML + CSS', themeClass: 'bg-accent/15 text-accent dark:bg-accent/20' },
-    'html+css+js': { label: 'HTML + CSS + JS', themeClass: 'bg-warning/15 text-warning dark:bg-warning/20' },
+const tierLabels: Record<QuestTier, { label: string }> = {
+    'html': { label: 'HTML' },
+    'html+css': { label: 'HTML + CSS' },
+    'html+css+js': { label: 'HTML + CSS + JS' },
 };
 
 // ============================================================
@@ -140,7 +113,7 @@ function QuizExercise({
                                         : 'bg-white/30 text-text-secondary border-2 border-transparent'
                                 : selected === i
                                     ? 'bg-primary/15 text-primary border-2 border-primary/40'
-                                    : 'bg-white/40 text-text hover:bg-white/60 border-2 border-transparent'
+                                    : 'bg-white/40 dark:bg-slate-700/50 text-text hover:bg-white/60 dark:hover:bg-slate-600/60 border-2 border-transparent'
                             }
                         `}
                         whileTap={!answered ? { scale: 0.98 } : undefined}
@@ -182,7 +155,7 @@ function QuizExercise({
                         w-full py-3 rounded-xl text-sm font-bold transition-all duration-200
                         ${selected !== null
                             ? 'bg-primary text-white cursor-pointer hover:opacity-90'
-                            : 'bg-white/30 text-text-secondary cursor-not-allowed'
+                            : 'bg-white/30 dark:bg-slate-700/40 text-text-secondary cursor-not-allowed'
                         }
                     `}
                     whileTap={selected !== null ? { scale: 0.97 } : undefined}
@@ -376,7 +349,7 @@ function DragDropExercise({
                         <motion.button
                             key={`${token}-${i}`}
                             onClick={() => addToken(token)}
-                            className="px-3 py-1.5 bg-white/40 hover:bg-white/60 rounded-lg font-mono text-xs text-text cursor-pointer transition-colors"
+                            className="px-3 py-1.5 bg-white/40 dark:bg-slate-700/50 hover:bg-white/60 dark:hover:bg-slate-600/60 rounded-lg font-mono text-xs text-text cursor-pointer transition-colors"
                             whileTap={{ scale: 0.95 }}
                         >
                             {token}
@@ -471,13 +444,7 @@ export default function DailyQuest() {
             {/* Quest Header */}
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                    <motion.div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center ${tierInfo.themeClass}`}
-                        animate={isMobile ? {} : { rotate: [0, 5, -5, 0], scale: [1, 1.05, 1] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                    >
-                        {React.createElement(tierIcons[tier])}
-                    </motion.div>
+                    <QuestMascot size={40} animate={!isMobile} />
                     <div>
                         <h3 className="text-base font-bold text-text flex items-center gap-2">
                             {t('quest.title')}
@@ -512,7 +479,7 @@ export default function DailyQuest() {
             </div>
 
             {/* Quest Title */}
-            <div className="mb-4 px-3 py-2 bg-white/30 rounded-xl">
+            <div className="mb-4 px-3 py-2 bg-white/30 dark:bg-slate-700/40 rounded-xl">
                 <p className="text-sm font-bold text-text">{quest.title}</p>
             </div>
 

@@ -7,6 +7,9 @@ import { useAppStore } from './useAppStore';
 import { usePetStore } from './usePetStore';
 import { useQuestStore } from './useQuestStore';
 
+// Admin account — login with this email to get admin powers
+const ADMIN_EMAIL = 'admin@spear.com';
+
 export interface AuthUser {
     id: string;
     email: string;
@@ -40,6 +43,7 @@ const restoreState = (userId: string) => {
 
 export interface AuthState {
     isLoggedIn: boolean;
+    isAdmin: boolean;
     user: AuthUser | null;
     isLoading: boolean;
     error: string | null;
@@ -54,6 +58,7 @@ export const useAuthStore = create<AuthState>()(
     persist(
         (set, get) => ({
             isLoggedIn: false,
+            isAdmin: false,
             user: null,
             isLoading: false,
             error: null,
@@ -74,6 +79,7 @@ export const useAuthStore = create<AuthState>()(
                         if (data.user) {
                             set({
                                 isLoggedIn: true,
+                                isAdmin: email.toLowerCase() === ADMIN_EMAIL,
                                 user: {
                                     id: data.user.id,
                                     email: data.user.email || email,
@@ -90,6 +96,7 @@ export const useAuthStore = create<AuthState>()(
                     const localId = `local-${Date.now()}`;
                     set({
                         isLoggedIn: true,
+                        isAdmin: email.toLowerCase() === ADMIN_EMAIL,
                         user: {
                             id: localId,
                             email,
@@ -177,7 +184,7 @@ export const useAuthStore = create<AuthState>()(
                 usePetStore.getState().clearStore();
                 useQuestStore.getState().clearStore();
 
-                set({ isLoggedIn: false, user: null, error: null });
+                set({ isLoggedIn: false, isAdmin: false, user: null, error: null });
             },
 
             clearError: () => set({ error: null }),
@@ -212,6 +219,7 @@ export const useAuthStore = create<AuthState>()(
             name: 'spear-auth',
             partialize: (state) => ({
                 isLoggedIn: state.isLoggedIn,
+                isAdmin: state.isAdmin,
                 user: state.user,
             }),
         }

@@ -330,6 +330,54 @@ export function MySQLMascot({ size = 80, className = '', animate = true }: Masco
     );
 }
 
+/* ====== Quest Mascot — Cute Scroll Character ====== */
+export function QuestMascot({ size = 80, className = '', animate = true }: MascotProps) {
+    const isMobile = useIsMobile();
+    const shouldAnimate = animate && !isMobile;
+    return (
+        <motion.svg
+            width={size}
+            height={size}
+            viewBox="0 0 120 120"
+            fill="none"
+            className={className}
+            animate={shouldAnimate ? { y: [0, -3, 0] } : undefined}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+        >
+            {/* Scroll body */}
+            <rect x="30" y="25" width="60" height="72" rx="6" fill="#F5DEB3" stroke="#D4A853" strokeWidth="2" />
+            {/* Scroll top roll */}
+            <ellipse cx="60" cy="25" rx="34" ry="8" fill="#E8C96A" stroke="#D4A853" strokeWidth="1.5" />
+            <ellipse cx="60" cy="25" rx="34" ry="5" fill="#F5DEB3" />
+            {/* Scroll bottom roll */}
+            <ellipse cx="60" cy="97" rx="34" ry="8" fill="#E8C96A" stroke="#D4A853" strokeWidth="1.5" />
+            <ellipse cx="60" cy="97" rx="34" ry="5" fill="#F5DEB3" />
+            {/* Text lines on scroll */}
+            <rect x="40" y="38" width="28" height="3" rx="1.5" fill="#D4A853" opacity="0.4" />
+            <rect x="40" y="46" width="40" height="3" rx="1.5" fill="#D4A853" opacity="0.3" />
+            <rect x="40" y="54" width="22" height="3" rx="1.5" fill="#D4A853" opacity="0.3" />
+            {/* Left eye */}
+            <circle cx="48" cy="68" r="6" fill="white" />
+            <circle cx="49" cy="67" r="3" fill="#1E293B" />
+            <circle cx="50.5" cy="65.5" r="1" fill="white" />
+            {/* Right eye */}
+            <circle cx="72" cy="68" r="6" fill="white" />
+            <circle cx="73" cy="67" r="3" fill="#1E293B" />
+            <circle cx="74.5" cy="65.5" r="1" fill="white" />
+            {/* Smile */}
+            <path d="M52 78 Q60 86 68 78" stroke="#1E293B" strokeWidth="2" fill="none" strokeLinecap="round" />
+            {/* Cheeks */}
+            <circle cx="42" cy="76" r="3.5" fill="#F5C87A" opacity="0.5" />
+            <circle cx="78" cy="76" r="3.5" fill="#F5C87A" opacity="0.5" />
+            {/* Wax seal */}
+            <circle cx="82" cy="40" r="10" fill="#E05A48" />
+            <circle cx="82" cy="40" r="7" fill="#F06D5B" />
+            {/* Star on seal */}
+            <polygon points="82,34 83.5,38 88,38 84.5,41 86,45 82,42.5 78,45 79.5,41 76,38 80.5,38" fill="#F5DEB3" />
+        </motion.svg>
+    );
+}
+
 /* ====== Language-agnostic Mascot Selector ====== */
 export function LanguageMascot({ lang, ...props }: MascotProps & { lang: string }) {
     switch (lang) {
